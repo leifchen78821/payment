@@ -26,6 +26,29 @@ class Payment
         return $result ;
     }
     // ----------------------------------------
+    // 取得明細資料
+    // ----------------------------------------
+    function takeMemberList()
+    {
+        // ----------------------------------------
+        // 定義使用者
+        // ----------------------------------------
+        
+        $ID = 'Leif_Chen';
+        
+        // ----------------------------------------
+        
+        $db = new PDO("mysql:host=localhost;dbname=PayMent", "root", "");
+        $db->exec("SET CHARACTER SET utf8");
+        
+        $eventList = "SELECT * FROM `TransactionDetails` WHERE `MemberName` = :ID ;" ;
+        $prepare = $db->prepare($eventList);
+        $prepare->bindParam(':ID',$ID);
+        $prepare->execute();
+        $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        return $result ;
+    }
+    // ----------------------------------------
     // 提(出)款
     // ----------------------------------------
     function dispensingMoney($money)
@@ -78,7 +101,7 @@ class Payment
         $time = date("Y-m-d H:i:s") ;
         $action = 0 ;
         
-        $eventList ="INSERT INTO `TransactionDetails` (
+        $eventList = "INSERT INTO `TransactionDetails` (
                             `MemberName` ,
 							`dateTime` ,
 							`preTotalAssets` ,
@@ -116,6 +139,7 @@ class Payment
 $MemberData = new Payment();
 
 $basicData = $MemberData->takeMemberData();
+$basicList = $MemberData->takeMemberList();
 
 if (isset($_POST["btnDispensing"])) 
 {
@@ -155,6 +179,18 @@ if (isset($_POST["btnDeposit"]))
             <td width = "25%">金額</td>
             <td width = "25%">餘額</td>
             </tr>
+            <?php foreach($basicList as $List): ?>
+            <tr>
+            <td width = "35%"><?php echo $List["dateTime"]; ?></td>
+            <td width = "15%"><?php if($List["action"] == 0): ?>
+                              存款
+                              <?php else: ?>
+                              提款
+                              <?php endif ?></td>
+            <td width = "25%"><?php echo $List["money"]; ?></td>
+            <td width = "25%"><?php echo $List["afterTotalAssets"]; ?></td>
+            </tr>
+            <?php endforeach ?>
         </table>
     </body>
 </html>
