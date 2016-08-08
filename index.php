@@ -25,10 +25,34 @@ class Payment
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         return $result ;
     }
+    // ----------------------------------------
+    // 提(出)款
+    // ----------------------------------------
+    function dispensingMoney()
+    {
+        
+    }
+    // ----------------------------------------
+    // 存(入)款
+    // ----------------------------------------
+    function depositMoney()
+    {
+        
+    }
 }
 
 $MemberData = new Payment();
+
 $basicData = $MemberData->takeMemberData();
+
+if (isset($_POST["btnDispensing"])) 
+{
+    $MemberData->dispensingMoney();
+}
+if (isset($_POST["btnDeposit"])) 
+{
+    $MemberData->depositMoney();
+}
 
 ?>
 <!DOCTYPE html>
