@@ -12,8 +12,10 @@
         餘額 : <br>
         <br>
         <form>
+            執行動作 : 
+            <input type="text" name="txtMoneyCount" id="txtMoneyCount"><br><br>
             <input type = "button" name = "btnDispensing" id = "btnDispensing" value = "出款">
-            <input type = "button" name = "btnDeposit" id = "btnDeposit" value = "入款"><br>
+            &nbsp;<input type = "button" name = "btnDeposit" id = "btnDeposit" value = "入款"><br>
         </form>
         <br>
         明細 : <br>
