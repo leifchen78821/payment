@@ -71,7 +71,7 @@ class Payment
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         $nowMoney = $result[0]["totalAssets"];
-        
+        sleep(5);
         // $totalMoney = $nowMoney + $money;
         
         if($nowMoney >= $money)
@@ -96,7 +96,7 @@ class Payment
             
             date_default_timezone_set('Asia/Taipei');
             $time = date("Y-m-d H:i:s") ;
-            $action = 0 ;
+            $action = 1 ;
             
             $eventList = "INSERT INTO `TransactionDetails` (
                                 `MemberName` ,
@@ -162,7 +162,7 @@ class Payment
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         $nowMoney = $result[0]["totalAssets"];
-        
+        sleep(5);
         $totalMoney = $nowMoney + $money;
         
         // ----------------------------------------
