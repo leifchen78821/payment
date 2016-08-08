@@ -1,22 +1,20 @@
 <?php
 
 class Payment 
-{
+{   
+    function __construct() 
+    {
+        global $ID , $db ;
+        $ID = 'Leif_Chen';
+        $db = new PDO("mysql:host=localhost;dbname=PayMent", "root", "");
+        $db->exec("SET CHARACTER SET utf8");
+    }
     // ----------------------------------------
     // 取得基本資料
     // ----------------------------------------
     function takeMemberData()
     {
-        // ----------------------------------------
-        // 定義使用者
-        // ----------------------------------------
-        
-        $ID = 'Leif_Chen';
-        
-        // ----------------------------------------
-        
-        $db = new PDO("mysql:host=localhost;dbname=PayMent", "root", "");
-        $db->exec("SET CHARACTER SET utf8");
+        global $ID , $db ;
         
         $eventList = "SELECT * FROM `MemberData` WHERE `MemberName` = :ID ;" ;
         $prepare = $db->prepare($eventList);
@@ -30,16 +28,7 @@ class Payment
     // ----------------------------------------
     function takeMemberList()
     {
-        // ----------------------------------------
-        // 定義使用者
-        // ----------------------------------------
-        
-        $ID = 'Leif_Chen';
-        
-        // ----------------------------------------
-        
-        $db = new PDO("mysql:host=localhost;dbname=PayMent", "root", "");
-        $db->exec("SET CHARACTER SET utf8");
+        global $ID , $db ;
         
         $eventList = "SELECT * FROM `TransactionDetails` WHERE `MemberName` = :ID ;" ;
         $prepare = $db->prepare($eventList);
@@ -53,16 +42,7 @@ class Payment
     // ----------------------------------------
     function dispensingMoney($money)
     {
-        // ----------------------------------------
-        // 定義使用者
-        // ----------------------------------------
-        
-        $ID = 'Leif_Chen';
-        
-        // ----------------------------------------
-        
-        $db = new PDO("mysql:host=localhost;dbname=PayMent", "root", "");
-        $db->exec("SET CHARACTER SET utf8");
+        global $ID , $db ;
         $db->beginTransaction();
         
         $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :ID FOR UPDATE;" ;
@@ -72,7 +52,6 @@ class Payment
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         $nowMoney = $result[0]["totalAssets"];
         sleep(5);
-        // $totalMoney = $nowMoney + $money;
         
         if($nowMoney >= $money)
         {
@@ -144,16 +123,7 @@ class Payment
     // ----------------------------------------
     function depositMoney($money)
     {
-        // ----------------------------------------
-        // 定義使用者
-        // ----------------------------------------
-        
-        $ID = 'Leif_Chen';
-        
-        // ----------------------------------------
-        
-        $db = new PDO("mysql:host=localhost;dbname=PayMent", "root", "");
-        $db->exec("SET CHARACTER SET utf8");
+        global $ID , $db ;
         $db->beginTransaction();
         
         $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :ID FOR UPDATE;" ;
@@ -163,11 +133,12 @@ class Payment
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         $nowMoney = $result[0]["totalAssets"];
         sleep(5);
-        $totalMoney = $nowMoney + $money;
         
         // ----------------------------------------
         // 更新會員資料
         // ----------------------------------------
+        
+        $totalMoney = $nowMoney + $money;
         
         $eventList = "UPDATE `MemberData` SET 
                     `totalAssets` = :totalMoney 
