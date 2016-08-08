@@ -47,11 +47,13 @@ $basicData = $MemberData->takeMemberData();
 
 if (isset($_POST["btnDispensing"])) 
 {
-    $MemberData->dispensingMoney();
+    $money = $_POST["txtMoneyCount"];
+    $MemberData->dispensingMoney($money);
 }
 if (isset($_POST["btnDeposit"])) 
 {
-    $MemberData->depositMoney();
+    $money = $_POST["txtMoneyCount"];
+    $MemberData->depositMoney($money);
 }
 
 ?>
