@@ -6,11 +6,11 @@ class Payment
     // 定義帳號，資料庫
     // ----------------------------------------
     public $db = null;
-    public $ID = null;
+    public $id = null;
 
     function __construct()
     {
-        $this->ID = 'Leif_Chen';
+        $this->id = 'Leif_Chen';
         $this->db = new PDO("mysql:host=localhost;dbname=PayMent", "root", "");
         $this->db->exec("SET CHARACTER SET utf8");
     }
@@ -20,9 +20,9 @@ class Payment
     // ----------------------------------------
     function takeMemberData()
     {
-        $eventList = "SELECT * FROM `MemberData` WHERE `MemberName` = :ID ;";
+        $eventList = "SELECT * FROM `MemberData` WHERE `MemberName` = :id ;";
         $prepare = $this->db->prepare($eventList);
-        $prepare->bindParam(':ID',$this->ID);
+        $prepare->bindParam(':id',$this->id);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -33,9 +33,9 @@ class Payment
     // ----------------------------------------
     function takeMemberList()
     {
-        $eventList = "SELECT * FROM `TransactionDetails` WHERE `MemberName` = :ID ;";
+        $eventList = "SELECT * FROM `TransactionDetails` WHERE `MemberName` = :id ;";
         $prepare = $this->db->prepare($eventList);
-        $prepare->bindParam(':ID',$this->ID);
+        $prepare->bindParam(':id',$this->id);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -47,9 +47,9 @@ class Payment
     function dispensingMoney($money)
     {
         $this->db->beginTransaction();
-        $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :ID FOR UPDATE ;";
+        $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :id FOR UPDATE ;";
         $prepare = $this->db->prepare($eventList);
-        $prepare->bindParam(':ID', $this->ID);
+        $prepare->bindParam(':id', $this->id);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         $nowMoney = $result[0]["totalAssets"];
@@ -65,11 +65,11 @@ class Payment
             $eventList = "UPDATE `MemberData` SET 
                                 `totalAssets` = :totalMoney 
                                 WHERE 
-                                `MemberName` = :ID"; 
+                                `MemberName` = :id"; 
 
             $prepare = $this->db->prepare($eventList);
             $prepare->bindParam(':totalMoney', $totalMoney);
-            $prepare->bindParam(':ID', $this->ID);
+            $prepare->bindParam(':id', $this->id);
             $prepare->execute();
 
             // ----------------------------------------
@@ -89,7 +89,7 @@ class Payment
     							`afterTotalAssets`
     							) 
     						VALUES ( 
-    						    :ID ,
+    						    :id ,
     							:time ,
     							:preTotalAssets ,
     							:action ,
@@ -97,8 +97,8 @@ class Payment
     							:afterTotalAssets
     			            	)"; 
 
-            $prepare = $db->prepare($eventList);
-            $prepare->bindParam(':ID', $ID);
+            $prepare = $this->db->prepare($eventList);
+            $prepare->bindParam(':id', $this->id);
             $prepare->bindParam(':time', $time);
             $prepare->bindParam(':preTotalAssets', $nowMoney);
             $prepare->bindParam(':action', $action);
@@ -116,6 +116,7 @@ class Payment
             echo "</script>";
             $this->db->rollback();
         }
+    }
 
     // ----------------------------------------
     // 存(入)款
@@ -123,9 +124,9 @@ class Payment
     function depositMoney($money)
     {
         $this->db->beginTransaction();
-        $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :ID FOR UPDATE;";
+        $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :id FOR UPDATE;";
         $prepare = $this->db->prepare($eventList);
-        $prepare->bindParam(':ID', $this->ID);
+        $prepare->bindParam(':id', $this->id);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         $nowMoney = $result[0]["totalAssets"];
@@ -139,11 +140,11 @@ class Payment
         $eventList = "UPDATE `MemberData` SET 
                             `totalAssets` = :totalMoney 
                             WHERE 
-                            `MemberName` = :ID"; 
+                            `MemberName` = :id"; 
 
         $prepare = $this->db->prepare($eventList);
         $prepare->bindParam(':totalMoney', $totalMoney);
-        $prepare->bindParam(':ID', $this->ID);
+        $prepare->bindParam(':id', $this->id);
         $prepare->execute();
         
         // ----------------------------------------
@@ -163,7 +164,7 @@ class Payment
 							`afterTotalAssets`
 							) 
 						VALUES ( 
-						    :ID ,
+						    :id ,
 							:time ,
 							:preTotalAssets ,
 							:action ,
@@ -172,7 +173,7 @@ class Payment
 			            	)"; 
             
         $prepare = $this->db->prepare($eventList);
-        $prepare->bindParam(':ID', $this->ID);
+        $prepare->bindParam(':id', $this->id);
         $prepare->bindParam(':time', $time);
         $prepare->bindParam(':preTotalAssets', $nowMoney);
         $prepare->bindParam(':action', $action);
@@ -187,17 +188,17 @@ class Payment
     }
 }
 
-$MemberData = new Payment();
+$memberData = new Payment();
 
-$basicData = $MemberData->takeMemberData();
-$basicList = $MemberData->takeMemberList();
+$basicData = $memberData->takeMemberData();
+$basicList = $memberData->takeMemberList();
 
 if (isset($_POST["btnDispensing"])) {
-    $MemberData->dispensingMoney($_POST["txtMoneyCount"]);
+    $memberData->dispensingMoney($_POST["txtMoneyCount"]);
 }
 
 if (isset($_POST["btnDeposit"])) {
-    $MemberData->depositMoney($_POST["txtMoneyCount"]);
+    $memberData->depositMoney($_POST["txtMoneyCount"]);
 }
 
 ?>
