@@ -1,7 +1,7 @@
 <?php
 
-class Payment 
-{   
+class Payment
+{
     // ----------------------------------------
     // 定義帳號，資料庫
     // ----------------------------------------
@@ -61,12 +61,7 @@ class Payment
             // ----------------------------------------
 
             $totalMoney = $nowMoney - $money;
-
-            $eventList = "UPDATE `MemberData` SET 
-                                `totalAssets` = :totalMoney 
-                                WHERE 
-                                `MemberName` = :id"; 
-
+            $eventList = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `MemberName` = :id"; 
             $prepare = $this->db->prepare($eventList);
             $prepare->bindParam(':totalMoney', $totalMoney);
             $prepare->bindParam(':id', $this->id);
@@ -80,22 +75,10 @@ class Payment
             $time = date("Y-m-d H:i:s");
             $action = 1;
 
-            $eventList = "INSERT INTO `TransactionDetails` (
-                                `MemberName` ,
-    							`dateTime` ,
-    							`preTotalAssets` ,
-    							`action` ,
-    							`money` ,
-    							`afterTotalAssets`
-    							) 
-    						VALUES ( 
-    						    :id ,
-    							:time ,
-    							:preTotalAssets ,
-    							:action ,
-    							:money ,
-    							:afterTotalAssets
-    			            	)"; 
+            $eventList = "INSERT INTO `TransactionDetails` ".
+                        "(`MemberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)".
+    					"VALUES".
+    					"(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
 
             $prepare = $this->db->prepare($eventList);
             $prepare->bindParam(':id', $this->id);
@@ -136,42 +119,25 @@ class Payment
         // ----------------------------------------
 
         $totalMoney = $nowMoney + $money;
-        
-        $eventList = "UPDATE `MemberData` SET 
-                            `totalAssets` = :totalMoney 
-                            WHERE 
-                            `MemberName` = :id"; 
-
+        $eventList = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `MemberName` = :id"; 
         $prepare = $this->db->prepare($eventList);
         $prepare->bindParam(':totalMoney', $totalMoney);
         $prepare->bindParam(':id', $this->id);
         $prepare->execute();
-        
+
         // ----------------------------------------
         // 更新動作明細
         // ----------------------------------------
-        
+
         date_default_timezone_set('Asia/Taipei');
         $time = date("Y-m-d H:i:s");
         $action = 0;
-        
-        $eventList = "INSERT INTO `TransactionDetails` (
-                            `MemberName` ,
-							`dateTime` ,
-							`preTotalAssets` ,
-							`action` ,
-							`money` ,
-							`afterTotalAssets`
-							) 
-						VALUES ( 
-						    :id ,
-							:time ,
-							:preTotalAssets ,
-							:action ,
-							:money ,
-							:afterTotalAssets
-			            	)"; 
-            
+
+        $eventList = "INSERT INTO `TransactionDetails` ".
+                    "(`MemberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)".
+					"VALUES".
+					"(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
+
         $prepare = $this->db->prepare($eventList);
         $prepare->bindParam(':id', $this->id);
         $prepare->bindParam(':time', $time);
