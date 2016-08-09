@@ -5,23 +5,26 @@ class Payment
     // ----------------------------------------
     // 定義帳號，資料庫
     // ----------------------------------------
+    public $db = null;
+    public $ID = null;
+    
     function __construct() 
     {
-        global $ID , $db;
-        $ID = 'Leif_Chen';
-        $db = new PDO("mysql:host=localhost;dbname=PayMent", "root", "");
-        $db->exec("SET CHARACTER SET utf8");
+        // global $ID , $db;
+        $this->ID = 'Leif_Chen';
+        $this->db = new PDO("mysql:host=localhost;dbname=PayMent", "root", "");
+        $this->db->exec("SET CHARACTER SET utf8");
     }
     // ----------------------------------------
     // 取得基本資料
     // ----------------------------------------
     function takeMemberData()
     {
-        global $ID , $db;
+        // global $ID , $db;
         
         $eventList = "SELECT * FROM `MemberData` WHERE `MemberName` = :ID ;";
-        $prepare = $db->prepare($eventList);
-        $prepare->bindParam(':ID',$ID);
+        $prepare = $this->db->prepare($eventList);
+        $prepare->bindParam(':ID',$this->ID);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -31,11 +34,11 @@ class Payment
     // ----------------------------------------
     function takeMemberList()
     {
-        global $ID , $db;
+        // global $ID , $db;
         
         $eventList = "SELECT * FROM `TransactionDetails` WHERE `MemberName` = :ID ;";
-        $prepare = $db->prepare($eventList);
-        $prepare->bindParam(':ID',$ID);
+        $prepare = $this->db->prepare($eventList);
+        $prepare->bindParam(':ID',$this->ID);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -45,12 +48,12 @@ class Payment
     // ----------------------------------------
     function dispensingMoney($money)
     {
-        global $ID , $db;
-        $db->beginTransaction();
+        // global $ID , $db;
+        $this->db->beginTransaction();
         
         $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :ID FOR UPDATE ;";
-        $prepare = $db->prepare($eventList);
-        $prepare->bindParam(':ID', $ID);
+        $prepare = $this->db->prepare($eventList);
+        $prepare->bindParam(':ID', $this->ID);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         $nowMoney = $result[0]["totalAssets"];
@@ -68,9 +71,9 @@ class Payment
                                 WHERE 
                                 `MemberName` = :ID"; 
                                 
-            $prepare = $db->prepare($eventList);
+            $prepare = $this->db->prepare($eventList);
             $prepare->bindParam(':totalMoney', $totalMoney);
-            $prepare->bindParam(':ID', $ID);
+            $prepare->bindParam(':ID', $this->ID);
             $prepare->execute();
             
             // ----------------------------------------
@@ -112,12 +115,12 @@ class Payment
             echo "<script language='JavaScript'>";
             echo "alert('出款完成');location.href='/_payment/';";
             echo "</script>";
-            $db->commit();
+            $this->db->commit();
         } else {
             echo "<script language='JavaScript'>";
             echo "alert('出款失敗');location.href='/_payment/';";
             echo "</script>";
-            $db->rollback();
+            $this->db->rollback();
         }
     }
     // ----------------------------------------
@@ -125,12 +128,12 @@ class Payment
     // ----------------------------------------
     function depositMoney($money)
     {
-        global $ID , $db ;
-        $db->beginTransaction();
+        // global $ID , $db ;
+        $this->db->beginTransaction();
         
         $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :ID FOR UPDATE;";
-        $prepare = $db->prepare($eventList);
-        $prepare->bindParam(':ID', $ID);
+        $prepare = $this->db->prepare($eventList);
+        $prepare->bindParam(':ID', $this->ID);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         $nowMoney = $result[0]["totalAssets"];
@@ -146,9 +149,9 @@ class Payment
                             `totalAssets` = :totalMoney 
                             WHERE 
                             `MemberName` = :ID"; 
-        $prepare = $db->prepare($eventList);
+        $prepare = $this->db->prepare($eventList);
         $prepare->bindParam(':totalMoney', $totalMoney);
-        $prepare->bindParam(':ID', $ID);
+        $prepare->bindParam(':ID', $this->ID);
         $prepare->execute();
         
         // ----------------------------------------
@@ -176,8 +179,8 @@ class Payment
 							:afterTotalAssets
 			            	)"; 
             
-        $prepare = $db->prepare($eventList);
-        $prepare->bindParam(':ID', $ID);
+        $prepare = $this->db->prepare($eventList);
+        $prepare->bindParam(':ID', $this->ID);
         $prepare->bindParam(':time', $time);
         $prepare->bindParam(':preTotalAssets', $nowMoney);
         $prepare->bindParam(':action', $action);
@@ -190,7 +193,7 @@ class Payment
         echo "<script language='JavaScript'>";
         echo "alert('入款完成');location.href='/_payment/';";
         echo "</script>";
-        $db->commit();
+        $this->db->commit();
     }
 }
 
