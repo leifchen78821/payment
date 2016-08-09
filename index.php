@@ -20,9 +20,9 @@ class Payment
     // ----------------------------------------
     function takeMemberData()
     {
-        $sql = "SELECT * FROM `MemberData` WHERE `MemberName` = :id ;";
+        $sql = "SELECT * FROM `MemberData` WHERE `memberName` = :id ;";
         $prepare = $this->db->prepare($sql);
-        $prepare->bindParam(':id',$this->id);
+        $prepare->bindParam(':id', $this->id);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -33,9 +33,9 @@ class Payment
     // ----------------------------------------
     function takeTransactionDetails()
     {
-        $sql = "SELECT * FROM `TransactionDetails` WHERE `MemberName` = :id ;";
+        $sql = "SELECT * FROM `TransactionDetails` WHERE `memberName` = :id ;";
         $prepare = $this->db->prepare($sql);
-        $prepare->bindParam(':id',$this->id);
+        $prepare->bindParam(':id', $this->id);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         return $result;
@@ -48,21 +48,21 @@ class Payment
     {
         try {
             $this->db->beginTransaction();
-            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :id FOR UPDATE ;";
+            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id FOR UPDATE ;";
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
             $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
             $nowMoney = $result[0]["totalAssets"];
     
-            if($nowMoney >= $money) {
+            if ($nowMoney >= $money) {
     
                 // ----------------------------------------
                 // 更新會員資料
                 // ----------------------------------------
     
                 $totalMoney = $nowMoney - $money;
-                $sql = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `MemberName` = :id"; 
+                $sql = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `memberName` = :id"; 
                 $prepare = $this->db->prepare($sql);
                 $prepare->bindParam(':totalMoney', $totalMoney);
                 $prepare->bindParam(':id', $this->id);
@@ -77,9 +77,9 @@ class Payment
                 $action = 1;
     
                 $sql = "INSERT INTO `TransactionDetails` ".
-                            "(`MemberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)".
-        					"VALUES".
-        					"(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
+                       "(`memberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)".
+                       "VALUES".
+                       "(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
     
                 $prepare = $this->db->prepare($sql);
                 $prepare->bindParam(':id', $this->id);
@@ -98,9 +98,8 @@ class Payment
                 echo "<script language='JavaScript'>";
                 echo "alert('出款失敗');location.href='/_payment/';";
                 echo "</script>";
-                $this->db->rollback();
             }
-        } catch(Exception $err) {
+        } catch (Exception $err) {
             $this->db->rollback();
         }
     }
@@ -112,7 +111,7 @@ class Payment
     {
         try {
             $this->db->beginTransaction();
-            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :id FOR UPDATE;";
+            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id FOR UPDATE;";
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
@@ -124,7 +123,7 @@ class Payment
             // ----------------------------------------
     
             $totalMoney = $nowMoney + $money;
-            $sql = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `MemberName` = :id"; 
+            $sql = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `memberName` = :id"; 
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':totalMoney', $totalMoney);
             $prepare->bindParam(':id', $this->id);
@@ -139,9 +138,9 @@ class Payment
             $action = 0;
     
             $sql = "INSERT INTO `TransactionDetails` ".
-                        "(`MemberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)".
-    					"VALUES".
-    					"(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
+                   "(`memberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)".
+                   "VALUES".
+                   "(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
     
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
@@ -156,7 +155,7 @@ class Payment
             echo "alert('入款完成');location.href='/_payment/';";
             echo "</script>";
             $this->db->commit();
-        } catch(Exception $err) {
+        } catch (Exception $err) {
             $this->db->rollback();
         }
     }
@@ -183,7 +182,7 @@ if (isset($_POST["btnDeposit"])) {
     </head>
     <body>
         <?php foreach($basicMemberData as $list): ?>
-        帳號 : <?php echo $list["MemberName"]; ?><br>
+        帳號 : <?php echo $list["memberName"]; ?><br>
         <br>
         餘額 : <?php echo $list["totalAssets"]; ?><br>
         <br>
