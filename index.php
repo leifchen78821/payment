@@ -7,21 +7,19 @@ class Payment
     // ----------------------------------------
     public $db = null;
     public $ID = null;
-    
-    function __construct() 
+
+    function __construct()
     {
-        // global $ID , $db;
         $this->ID = 'Leif_Chen';
         $this->db = new PDO("mysql:host=localhost;dbname=PayMent", "root", "");
         $this->db->exec("SET CHARACTER SET utf8");
     }
+
     // ----------------------------------------
     // 取得基本資料
     // ----------------------------------------
     function takeMemberData()
     {
-        // global $ID , $db;
-        
         $eventList = "SELECT * FROM `MemberData` WHERE `MemberName` = :ID ;";
         $prepare = $this->db->prepare($eventList);
         $prepare->bindParam(':ID',$this->ID);
@@ -29,13 +27,12 @@ class Payment
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     // ----------------------------------------
     // 取得明細資料
     // ----------------------------------------
     function takeMemberList()
     {
-        // global $ID , $db;
-        
         $eventList = "SELECT * FROM `TransactionDetails` WHERE `MemberName` = :ID ;";
         $prepare = $this->db->prepare($eventList);
         $prepare->bindParam(':ID',$this->ID);
@@ -43,47 +40,46 @@ class Payment
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     // ----------------------------------------
     // 提(出)款
     // ----------------------------------------
     function dispensingMoney($money)
     {
-        // global $ID , $db;
         $this->db->beginTransaction();
-        
         $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :ID FOR UPDATE ;";
         $prepare = $this->db->prepare($eventList);
         $prepare->bindParam(':ID', $this->ID);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         $nowMoney = $result[0]["totalAssets"];
-        sleep(5);
-        
+
         if($nowMoney >= $money) {
+
             // ----------------------------------------
             // 更新會員資料
             // ----------------------------------------
-            
+
             $totalMoney = $nowMoney - $money;
-            
+
             $eventList = "UPDATE `MemberData` SET 
                                 `totalAssets` = :totalMoney 
                                 WHERE 
                                 `MemberName` = :ID"; 
-                                
+
             $prepare = $this->db->prepare($eventList);
             $prepare->bindParam(':totalMoney', $totalMoney);
             $prepare->bindParam(':ID', $this->ID);
             $prepare->execute();
-            
+
             // ----------------------------------------
             // 更新動作明細
             // ----------------------------------------
-            
+
             date_default_timezone_set('Asia/Taipei');
             $time = date("Y-m-d H:i:s");
             $action = 1;
-            
+
             $eventList = "INSERT INTO `TransactionDetails` (
                                 `MemberName` ,
     							`dateTime` ,
@@ -100,7 +96,7 @@ class Payment
     							:money ,
     							:afterTotalAssets
     			            	)"; 
-                
+
             $prepare = $db->prepare($eventList);
             $prepare->bindParam(':ID', $ID);
             $prepare->bindParam(':time', $time);
@@ -109,9 +105,7 @@ class Payment
             $prepare->bindParam(':money', $money);
             $prepare->bindParam(':afterTotalAssets', $totalMoney);
             $prepare->execute();
-            
-            // ----------------------------------------  
-            
+
             echo "<script language='JavaScript'>";
             echo "alert('出款完成');location.href='/_payment/';";
             echo "</script>";
@@ -122,33 +116,31 @@ class Payment
             echo "</script>";
             $this->db->rollback();
         }
-    }
+
     // ----------------------------------------
     // 存(入)款
     // ----------------------------------------
     function depositMoney($money)
     {
-        // global $ID , $db ;
         $this->db->beginTransaction();
-        
         $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :ID FOR UPDATE;";
         $prepare = $this->db->prepare($eventList);
         $prepare->bindParam(':ID', $this->ID);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         $nowMoney = $result[0]["totalAssets"];
-        sleep(5);
-        
+
         // ----------------------------------------
         // 更新會員資料
         // ----------------------------------------
-        
+
         $totalMoney = $nowMoney + $money;
         
         $eventList = "UPDATE `MemberData` SET 
                             `totalAssets` = :totalMoney 
                             WHERE 
                             `MemberName` = :ID"; 
+
         $prepare = $this->db->prepare($eventList);
         $prepare->bindParam(':totalMoney', $totalMoney);
         $prepare->bindParam(':ID', $this->ID);
@@ -187,9 +179,7 @@ class Payment
         $prepare->bindParam(':money', $money);
         $prepare->bindParam(':afterTotalAssets', $totalMoney);
         $prepare->execute();
-        
-        // ----------------------------------------  
-        
+
         echo "<script language='JavaScript'>";
         echo "alert('入款完成');location.href='/_payment/';";
         echo "</script>";
@@ -224,7 +214,7 @@ if (isset($_POST["btnDeposit"])) {
         <br>
         <?php endforeach ?>
         <form id = "formcreate" name = "formcreate" method = "post">
-            執行動作 : 
+            執行動作 :
             <input type="text" name="txtMoneyCount" id="txtMoneyCount"><br><br>
             <input type = "submit" name = "btnDispensing" id = "btnDispensing" value = "出款">
             &nbsp;<input type = "submit" name = "btnDeposit" id = "btnDeposit" value = "入款"><br>
