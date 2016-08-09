@@ -20,8 +20,8 @@ class Payment
     // ----------------------------------------
     function takeMemberData()
     {
-        $eventList = "SELECT * FROM `MemberData` WHERE `MemberName` = :id ;";
-        $prepare = $this->db->prepare($eventList);
+        $sql = "SELECT * FROM `MemberData` WHERE `MemberName` = :id ;";
+        $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':id',$this->id);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
@@ -31,10 +31,10 @@ class Payment
     // ----------------------------------------
     // 取得明細資料
     // ----------------------------------------
-    function takeMemberList()
+    function takeTransactionDetails()
     {
-        $eventList = "SELECT * FROM `TransactionDetails` WHERE `MemberName` = :id ;";
-        $prepare = $this->db->prepare($eventList);
+        $sql = "SELECT * FROM `TransactionDetails` WHERE `MemberName` = :id ;";
+        $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':id',$this->id);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
@@ -47,8 +47,8 @@ class Payment
     function dispensingMoney($money)
     {
         $this->db->beginTransaction();
-        $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :id FOR UPDATE ;";
-        $prepare = $this->db->prepare($eventList);
+        $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :id FOR UPDATE ;";
+        $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':id', $this->id);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
@@ -61,8 +61,8 @@ class Payment
             // ----------------------------------------
 
             $totalMoney = $nowMoney - $money;
-            $eventList = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `MemberName` = :id"; 
-            $prepare = $this->db->prepare($eventList);
+            $sql = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `MemberName` = :id"; 
+            $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':totalMoney', $totalMoney);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
@@ -75,12 +75,12 @@ class Payment
             $time = date("Y-m-d H:i:s");
             $action = 1;
 
-            $eventList = "INSERT INTO `TransactionDetails` ".
+            $sql = "INSERT INTO `TransactionDetails` ".
                         "(`MemberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)".
     					"VALUES".
     					"(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
 
-            $prepare = $this->db->prepare($eventList);
+            $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->bindParam(':time', $time);
             $prepare->bindParam(':preTotalAssets', $nowMoney);
@@ -107,8 +107,8 @@ class Payment
     function depositMoney($money)
     {
         $this->db->beginTransaction();
-        $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :id FOR UPDATE;";
-        $prepare = $this->db->prepare($eventList);
+        $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :id FOR UPDATE;";
+        $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':id', $this->id);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
@@ -119,8 +119,8 @@ class Payment
         // ----------------------------------------
 
         $totalMoney = $nowMoney + $money;
-        $eventList = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `MemberName` = :id"; 
-        $prepare = $this->db->prepare($eventList);
+        $sql = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `MemberName` = :id"; 
+        $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':totalMoney', $totalMoney);
         $prepare->bindParam(':id', $this->id);
         $prepare->execute();
@@ -133,12 +133,12 @@ class Payment
         $time = date("Y-m-d H:i:s");
         $action = 0;
 
-        $eventList = "INSERT INTO `TransactionDetails` ".
+        $sql = "INSERT INTO `TransactionDetails` ".
                     "(`MemberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)".
 					"VALUES".
 					"(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
 
-        $prepare = $this->db->prepare($eventList);
+        $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':id', $this->id);
         $prepare->bindParam(':time', $time);
         $prepare->bindParam(':preTotalAssets', $nowMoney);
@@ -156,8 +156,8 @@ class Payment
 
 $memberData = new Payment();
 
-$basicData = $memberData->takeMemberData();
-$basicList = $memberData->takeMemberList();
+$basicMemberData = $memberData->takeMemberData();
+$basicTransactionDetails = $memberData->takeTransactionDetails();
 
 if (isset($_POST["btnDispensing"])) {
     $memberData->dispensingMoney($_POST["txtMoneyCount"]);
@@ -174,10 +174,10 @@ if (isset($_POST["btnDeposit"])) {
         <meta http-equiv = "Content-Type" content = "text/html ; charset = UTF-8">
     </head>
     <body>
-        <?php foreach($basicData as $List): ?>
-        帳號 : <?php echo $List["MemberName"]; ?><br>
+        <?php foreach($basicMemberData as $list): ?>
+        帳號 : <?php echo $list["MemberName"]; ?><br>
         <br>
-        餘額 : <?php echo $List["totalAssets"]; ?><br>
+        餘額 : <?php echo $list["totalAssets"]; ?><br>
         <br>
         <?php endforeach ?>
         <form id = "formcreate" name = "formcreate" method = "post">
@@ -196,16 +196,16 @@ if (isset($_POST["btnDeposit"])) {
             <td width = "25%">金額</td>
             <td width = "25%">餘額</td>
             </tr>
-            <?php foreach($basicList as $List): ?>
+            <?php foreach($basicTransactionDetails as $list): ?>
             <tr>
-            <td width = "35%"><?php echo $List["dateTime"]; ?></td>
-            <td width = "15%"><?php if($List["action"] == 0): ?>
+            <td width = "35%"><?php echo $list["dateTime"]; ?></td>
+            <td width = "15%"><?php if($list["action"] == 0): ?>
                               存款
                               <?php else: ?>
                               提款
                               <?php endif ?></td>
-            <td width = "25%"><?php echo $List["money"]; ?></td>
-            <td width = "25%"><?php echo $List["afterTotalAssets"]; ?></td>
+            <td width = "25%"><?php echo $list["money"]; ?></td>
+            <td width = "25%"><?php echo $list["afterTotalAssets"]; ?></td>
             </tr>
             <?php endforeach ?>
         </table>
