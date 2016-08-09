@@ -2,9 +2,12 @@
 
 class Payment 
 {   
+    // ----------------------------------------
+    // 定義帳號，資料庫
+    // ----------------------------------------
     function __construct() 
     {
-        global $ID , $db ;
+        global $ID , $db;
         $ID = 'Leif_Chen';
         $db = new PDO("mysql:host=localhost;dbname=PayMent", "root", "");
         $db->exec("SET CHARACTER SET utf8");
@@ -14,38 +17,38 @@ class Payment
     // ----------------------------------------
     function takeMemberData()
     {
-        global $ID , $db ;
+        global $ID , $db;
         
-        $eventList = "SELECT * FROM `MemberData` WHERE `MemberName` = :ID ;" ;
+        $eventList = "SELECT * FROM `MemberData` WHERE `MemberName` = :ID ;";
         $prepare = $db->prepare($eventList);
         $prepare->bindParam(':ID',$ID);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
-        return $result ;
+        return $result;
     }
     // ----------------------------------------
     // 取得明細資料
     // ----------------------------------------
     function takeMemberList()
     {
-        global $ID , $db ;
+        global $ID , $db;
         
-        $eventList = "SELECT * FROM `TransactionDetails` WHERE `MemberName` = :ID ;" ;
+        $eventList = "SELECT * FROM `TransactionDetails` WHERE `MemberName` = :ID ;";
         $prepare = $db->prepare($eventList);
         $prepare->bindParam(':ID',$ID);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
-        return $result ;
+        return $result;
     }
     // ----------------------------------------
     // 提(出)款
     // ----------------------------------------
     function dispensingMoney($money)
     {
-        global $ID , $db ;
+        global $ID , $db;
         $db->beginTransaction();
         
-        $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :ID FOR UPDATE;" ;
+        $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :ID FOR UPDATE ;";
         $prepare = $db->prepare($eventList);
         $prepare->bindParam(':ID', $ID);
         $prepare->execute();
@@ -53,8 +56,7 @@ class Payment
         $nowMoney = $result[0]["totalAssets"];
         sleep(5);
         
-        if($nowMoney >= $money)
-        {
+        if($nowMoney >= $money) {
             // ----------------------------------------
             // 更新會員資料
             // ----------------------------------------
@@ -62,8 +64,10 @@ class Payment
             $totalMoney = $nowMoney - $money;
             
             $eventList = "UPDATE `MemberData` SET 
-                        `totalAssets` = :totalMoney 
-                        WHERE `MemberName` = :ID" ; 
+                                `totalAssets` = :totalMoney 
+                                WHERE 
+                                `MemberName` = :ID"; 
+                                
             $prepare = $db->prepare($eventList);
             $prepare->bindParam(':totalMoney', $totalMoney);
             $prepare->bindParam(':ID', $ID);
@@ -74,8 +78,8 @@ class Payment
             // ----------------------------------------
             
             date_default_timezone_set('Asia/Taipei');
-            $time = date("Y-m-d H:i:s") ;
-            $action = 1 ;
+            $time = date("Y-m-d H:i:s");
+            $action = 1;
             
             $eventList = "INSERT INTO `TransactionDetails` (
                                 `MemberName` ,
@@ -109,9 +113,7 @@ class Payment
             echo "alert('出款完成');location.href='/_payment/';";
             echo "</script>";
             $db->commit();
-        }
-        else
-        {
+        } else {
             echo "<script language='JavaScript'>";
             echo "alert('出款失敗');location.href='/_payment/';";
             echo "</script>";
@@ -126,7 +128,7 @@ class Payment
         global $ID , $db ;
         $db->beginTransaction();
         
-        $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :ID FOR UPDATE;" ;
+        $eventList = "SELECT `totalAssets` FROM `MemberData` WHERE `MemberName` = :ID FOR UPDATE;";
         $prepare = $db->prepare($eventList);
         $prepare->bindParam(':ID', $ID);
         $prepare->execute();
@@ -141,8 +143,9 @@ class Payment
         $totalMoney = $nowMoney + $money;
         
         $eventList = "UPDATE `MemberData` SET 
-                    `totalAssets` = :totalMoney 
-                    WHERE `MemberName` = :ID" ; 
+                            `totalAssets` = :totalMoney 
+                            WHERE 
+                            `MemberName` = :ID"; 
         $prepare = $db->prepare($eventList);
         $prepare->bindParam(':totalMoney', $totalMoney);
         $prepare->bindParam(':ID', $ID);
@@ -153,8 +156,8 @@ class Payment
         // ----------------------------------------
         
         date_default_timezone_set('Asia/Taipei');
-        $time = date("Y-m-d H:i:s") ;
-        $action = 0 ;
+        $time = date("Y-m-d H:i:s");
+        $action = 0;
         
         $eventList = "INSERT INTO `TransactionDetails` (
                             `MemberName` ,
@@ -196,12 +199,11 @@ $MemberData = new Payment();
 $basicData = $MemberData->takeMemberData();
 $basicList = $MemberData->takeMemberList();
 
-if (isset($_POST["btnDispensing"])) 
-{
+if (isset($_POST["btnDispensing"])) {
     $MemberData->dispensingMoney($_POST["txtMoneyCount"]);
 }
-if (isset($_POST["btnDeposit"])) 
-{
+
+if (isset($_POST["btnDeposit"])) {
     $MemberData->depositMoney($_POST["txtMoneyCount"]);
 }
 
