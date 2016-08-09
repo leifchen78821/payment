@@ -167,11 +167,23 @@ $basicMemberData = $memberData->takeMemberData();
 $basicTransactionDetails = $memberData->takeTransactionDetails();
 
 if (isset($_POST["btnDispensing"])) {
-    $memberData->dispensingMoney($_POST["txtMoneyCount"]);
+    if ($_POST["txtMoneyCount"] <= 0) {
+        echo "<script language='JavaScript'>";
+        echo "alert('輸入金額不可低於0');location.href='/_payment/';";
+        echo "</script>";
+    } else {
+        $memberData->dispensingMoney($_POST["txtMoneyCount"]);
+    }
 }
 
 if (isset($_POST["btnDeposit"])) {
-    $memberData->depositMoney($_POST["txtMoneyCount"]);
+    if ($_POST["txtMoneyCount"] <= 0) {
+        echo "<script language='JavaScript'>";
+        echo "alert('輸入金額不可低於0');location.href='/_payment/';";
+        echo "</script>";
+    } else {
+        $memberData->depositMoney($_POST["txtMoneyCount"]);
+    }
 }
 
 ?>
