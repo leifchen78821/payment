@@ -117,8 +117,8 @@ class Payment
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
-            $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
-            $nowMoney = $result[0]["totalAssets"];
+            $result = $prepare->fetch(PDO::FETCH_ASSOC);
+            $nowMoney = $result["totalAssets"];
 
             if ($nowMoney >= $money) {
                 // ----------------------------------------
@@ -180,8 +180,8 @@ class Payment
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
-            $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
-            $nowMoney = $result[0]["totalAssets"];
+            $result = $prepare->fetch(PDO::FETCH_ASSOC);
+            $nowMoney = $result["totalAssets"];
 
             // ----------------------------------------
             // 更新會員資料
