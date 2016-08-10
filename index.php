@@ -157,12 +157,12 @@ class Payment
                 echo "<script language='JavaScript'>";
                 echo "alert('出款完成');location.href='/_payment?member=". $_GET["member"]."';";
                 echo "</script>";
-                $this->db->commit();
             } else {
                 echo "<script language='JavaScript'>";
                 echo "alert('出款失敗');location.href='/_payment?member=". $_GET["member"]."';";
                 echo "</script>";
             }
+            $this->db->commit();
         } catch (Exception $err) {
             $this->db->rollback();
         }
