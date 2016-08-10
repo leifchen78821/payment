@@ -16,10 +16,12 @@
 //
 // *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
 // PDO::FETCH_BOTH，(預設)可不寫
+//
 // 同時取得陣列key的編號與SQL欄位名稱
 //
 // ----------------------------------------
 // PDO::FETCH_ASSOC
+//
 // 只取得欄位名稱
 //
 // ----------------------------------------
@@ -229,14 +231,23 @@ $basicMemberData = $memberData->takeMemberData();
 $basicMemberList = $memberData->takeMemberList();
 $basicTransactionDetails = $memberData->takeTransactionDetails();
 
+// ----------------------------------------
+// 新增會員按鈕
+// ----------------------------------------
 if (isset($_POST["btnAddMember"])) {
     $memberData->addNewMember($_POST["txtAddNewMember"]);
 }
 
+// ----------------------------------------
+// 選擇會員按鈕
+// ----------------------------------------
 if (isset($_POST["btnSelectMember"])) {
     $memberData->selectMember($_POST["select_one"]);
 }
 
+// ----------------------------------------
+// 出款按鈕
+// ----------------------------------------
 if (isset($_POST["btnDispensing"])) {
     if ($_POST["txtMoneyCount"] <= 0) {
         echo "<script language='JavaScript'>";
@@ -247,6 +258,9 @@ if (isset($_POST["btnDispensing"])) {
     }
 }
 
+// ----------------------------------------
+// 入款按鈕
+// ----------------------------------------
 if (isset($_POST["btnDeposit"])) {
     if ($_POST["txtMoneyCount"] <= 0) {
         echo "<script language='JavaScript'>";
