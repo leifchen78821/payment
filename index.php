@@ -8,12 +8,20 @@
 // ( select ... from ... for update 當然也不行)。
 //
 // ----------------------------------------
-//
 // LOCK IN SHARE MODE
 //
 // 在 select 過程遇到的資料列加上共享鎖(LOCK IN SHARE MODE)。
 // 加上共享鎖的資料，其他連線還是能讀取。
 // 加上共享鎖的資料，也允許其他連線再執行 select ... lock in share mode。
+//
+// *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+// PDO::FETCH_BOTH，(預設)可不寫
+// 同時取得陣列key的編號與SQL欄位名稱
+//
+// ----------------------------------------
+// PDO::FETCH_ASSOC
+// 只取得欄位名稱
+//
 // ----------------------------------------
 
 class Payment
@@ -64,7 +72,6 @@ class Payment
     // ----------------------------------------
     function selectMember($memberSelected)
     {
-        // $this->id = $memberSelected;
         echo "<script language='JavaScript'>";
         echo "alert('選擇使用者 : ". $memberSelected."');location.href='/_payment?member=". $memberSelected."';";
         echo "</script>";
@@ -146,12 +153,12 @@ class Payment
                 $prepare->execute();
 
                 echo "<script language='JavaScript'>";
-                echo "alert('出款完成');location.href='/_payment/';";
+                echo "alert('出款完成');location.href='/_payment?member=". $_GET["member"]."';";
                 echo "</script>";
                 $this->db->commit();
             } else {
                 echo "<script language='JavaScript'>";
-                echo "alert('出款失敗');location.href='/_payment/';";
+                echo "alert('出款失敗');location.href='/_payment?member=". $_GET["member"]."';";
                 echo "</script>";
             }
         } catch (Exception $err) {
@@ -207,7 +214,7 @@ class Payment
             $prepare->execute();
 
             echo "<script language='JavaScript'>";
-            echo "alert('入款完成');location.href='/_payment/';";
+            echo "alert('入款完成');location.href='/_payment?member=". $_GET["member"]."';";
             echo "</script>";
             $this->db->commit();
         } catch (Exception $err) {
@@ -233,7 +240,7 @@ if (isset($_POST["btnSelectMember"])) {
 if (isset($_POST["btnDispensing"])) {
     if ($_POST["txtMoneyCount"] <= 0) {
         echo "<script language='JavaScript'>";
-        echo "alert('輸入金額不可低於0');location.href='/_payment/';";
+        echo "alert('輸入金額不可低於0');location.href='/_payment?member=". $_GET["member"]."';";
         echo "</script>";
     } else {
         $memberData->dispensingMoney($_POST["txtMoneyCount"]);
@@ -243,7 +250,7 @@ if (isset($_POST["btnDispensing"])) {
 if (isset($_POST["btnDeposit"])) {
     if ($_POST["txtMoneyCount"] <= 0) {
         echo "<script language='JavaScript'>";
-        echo "alert('輸入金額不可低於0');location.href='/_payment/';";
+        echo "alert('輸入金額不可低於0');location.href='/_payment?member=". $_GET["member"]."';";
         echo "</script>";
     } else {
         $memberData->depositMoney($_POST["txtMoneyCount"]);
