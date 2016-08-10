@@ -46,15 +46,15 @@ class Payment
     // ----------------------------------------
     function addNewMember($newMemberName)
     {
-        $sql = "INSERT INTO `MemberData` ".
-               "(`memberName`, `totalAssets`)".
-               "VALUES ".
-               "(:newMemberName, '0');";
+        $sql = "INSERT INTO `MemberData` " .
+            "(`memberName`, `totalAssets`)" .
+            "VALUES " .
+            "(:newMemberName, '0');";
         $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':newMemberName', $newMemberName);
         $prepare->execute();
         echo "<script language='JavaScript'>";
-        echo "alert('新增使用者 : ". $newMemberName." 成功');location.href='/_payment/';";
+        echo "alert('新增使用者 : " . $newMemberName . " 成功');location.href='/_payment/';";
         echo "</script>";
     }
 
@@ -69,13 +69,14 @@ class Payment
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
     // ----------------------------------------
     // 依據下拉式選單選擇後取得新id
     // ----------------------------------------
     function selectMember($memberSelected)
     {
         echo "<script language='JavaScript'>";
-        echo "alert('選擇使用者 : ". $memberSelected."');location.href='/_payment?member=". $memberSelected."';";
+        echo "alert('選擇使用者 : " . $memberSelected . "');location.href='/_payment?member=" . $memberSelected . "';";
         echo "</script>";
     }
 
@@ -120,11 +121,9 @@ class Payment
             $nowMoney = $result[0]["totalAssets"];
 
             if ($nowMoney >= $money) {
-
                 // ----------------------------------------
                 // 更新會員資料
                 // ----------------------------------------
-
                 $totalMoney = $nowMoney - $money;
                 $sql = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `memberName` = :id";
                 $prepare = $this->db->prepare($sql);
@@ -135,15 +134,14 @@ class Payment
                 // ----------------------------------------
                 // 更新動作明細
                 // ----------------------------------------
-
                 date_default_timezone_set('Asia/Taipei');
                 $time = date("Y-m-d H:i:s");
                 $action = 1;
 
-                $sql = "INSERT INTO `TransactionDetails` ".
-                       "(`memberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)".
-                       "VALUES".
-                       "(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
+                $sql = "INSERT INTO `TransactionDetails` " .
+                    "(`memberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)" .
+                    "VALUES" .
+                    "(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
 
                 $prepare = $this->db->prepare($sql);
                 $prepare->bindParam(':id', $this->id);
@@ -155,11 +153,11 @@ class Payment
                 $prepare->execute();
 
                 echo "<script language='JavaScript'>";
-                echo "alert('出款完成');location.href='/_payment?member=". $_GET["member"]."';";
+                echo "alert('出款完成');location.href='/_payment?member=" . $_GET["member"] . "';";
                 echo "</script>";
             } else {
                 echo "<script language='JavaScript'>";
-                echo "alert('出款失敗');location.href='/_payment?member=". $_GET["member"]."';";
+                echo "alert('出款失敗');location.href='/_payment?member=" . $_GET["member"] . "';";
                 echo "</script>";
             }
             $this->db->commit();
@@ -185,7 +183,6 @@ class Payment
             // ----------------------------------------
             // 更新會員資料
             // ----------------------------------------
-
             $totalMoney = $nowMoney + $money;
             $sql = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `memberName` = :id";
             $prepare = $this->db->prepare($sql);
@@ -196,15 +193,14 @@ class Payment
             // ----------------------------------------
             // 更新動作明細
             // ----------------------------------------
-
             date_default_timezone_set('Asia/Taipei');
             $time = date("Y-m-d H:i:s");
             $action = 0;
 
-            $sql = "INSERT INTO `TransactionDetails` ".
-                   "(`memberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)".
-                   "VALUES".
-                   "(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
+            $sql = "INSERT INTO `TransactionDetails` " .
+                "(`memberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)" .
+                "VALUES" .
+                "(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
 
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
@@ -216,7 +212,7 @@ class Payment
             $prepare->execute();
 
             echo "<script language='JavaScript'>";
-            echo "alert('入款完成');location.href='/_payment?member=". $_GET["member"]."';";
+            echo "alert('入款完成');location.href='/_payment?member=" . $_GET["member"] . "';";
             echo "</script>";
             $this->db->commit();
         } catch (Exception $err) {
@@ -251,7 +247,7 @@ if (isset($_POST["btnSelectMember"])) {
 if (isset($_POST["btnDispensing"])) {
     if ($_POST["txtMoneyCount"] <= 0) {
         echo "<script language='JavaScript'>";
-        echo "alert('輸入金額不可低於0');location.href='/_payment?member=". $_GET["member"]."';";
+        echo "alert('輸入金額不可低於0');location.href='/_payment?member=" . $_GET["member"] . "';";
         echo "</script>";
     } else {
         $memberData->dispensingMoney($_POST["txtMoneyCount"]);
@@ -264,7 +260,7 @@ if (isset($_POST["btnDispensing"])) {
 if (isset($_POST["btnDeposit"])) {
     if ($_POST["txtMoneyCount"] <= 0) {
         echo "<script language='JavaScript'>";
-        echo "alert('輸入金額不可低於0');location.href='/_payment?member=". $_GET["member"]."';";
+        echo "alert('輸入金額不可低於0');location.href='/_payment?member=" . $_GET["member"] . "';";
         echo "</script>";
     } else {
         $memberData->depositMoney($_POST["txtMoneyCount"]);
