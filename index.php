@@ -162,6 +162,9 @@ class Payment
             }
             $this->db->commit();
         } catch (Exception $err) {
+            echo "<script language='JavaScript'>";
+            echo "alert('" . $err . "');location.href='/_payment?member=" . $_GET["member"] . "';";
+            echo "</script>";
             $this->db->rollback();
         }
     }
@@ -216,6 +219,9 @@ class Payment
             echo "</script>";
             $this->db->commit();
         } catch (Exception $err) {
+            echo "<script language='JavaScript'>";
+            echo "alert('" . $err . "');location.href='/_payment?member=" . $_GET["member"] . "';";
+            echo "</script>";
             $this->db->rollback();
         }
     }
