@@ -26,7 +26,7 @@ class Payment
 
     function __construct()
     {
-        $this->id = 'Leif_Chen';
+        $this->id = $_GET["member"];
         $this->db = new PDO("mysql:host=localhost;dbname=PayMent", "root", "");
         $this->db->exec("SET CHARACTER SET utf8");
     }
@@ -45,6 +45,28 @@ class Payment
         $prepare->execute();
         echo "<script language='JavaScript'>";
         echo "alert('新增使用者 : ". $newMemberName." 成功');location.href='/_payment/';";
+        echo "</script>";
+    }
+
+    // ----------------------------------------
+    // 取得下拉選單資料
+    // ----------------------------------------
+    function takeMemberList()
+    {
+        $sql = "SELECT `memberName` FROM `MemberData`";
+        $prepare = $this->db->prepare($sql);
+        $prepare->execute();
+        $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+    // ----------------------------------------
+    // 依據下拉式選單選擇後取得新id
+    // ----------------------------------------
+    function selectMember($memberSelected)
+    {
+        // $this->id = $memberSelected;
+        echo "<script language='JavaScript'>";
+        echo "alert('選擇使用者 : ". $memberSelected."');location.href='/_payment?member=". $memberSelected."';";
         echo "</script>";
     }
 
@@ -197,10 +219,15 @@ class Payment
 $memberData = new Payment();
 
 $basicMemberData = $memberData->takeMemberData();
+$basicMemberList = $memberData->takeMemberList();
 $basicTransactionDetails = $memberData->takeTransactionDetails();
 
 if (isset($_POST["btnAddMember"])) {
     $memberData->addNewMember($_POST["txtAddNewMember"]);
+}
+
+if (isset($_POST["btnSelectMember"])) {
+    $memberData->selectMember($_POST["select_one"]);
 }
 
 if (isset($_POST["btnDispensing"])) {
@@ -231,9 +258,19 @@ if (isset($_POST["btnDeposit"])) {
     </head>
     <body>
         <form id = "formcreate" name = "formcreate" method = "post">
+        <br>---------------------------------------------------------------------<br><br>
         新增使用者 :
-        <input type="text" name="txtAddNewMember" id="txtAddNewMember">
+        <input type = "text" name = "txtAddNewMember" id = "txtAddNewMember">
         <input type = "submit" name = "btnAddMember" id = "btnAddMember" value = "新增"><br><br>
+        ---------------------------------------------------------------------<br><br>
+        選擇帳號 :
+        <select name = "select_one">
+        <?php foreach($basicMemberList as $list): ?>
+        <option value = <?php echo $list["memberName"]; ?>><?php echo $list["memberName"]; ?></option>
+        <?php endforeach ?>
+        </select>
+        <input type = "submit" name = "btnSelectMember" id = "btnSelectMember" value = "選擇">
+        <br><br>---------------------------------------------------------------------<br><br>
         <?php foreach($basicMemberData as $list): ?>
         帳號 : <?php echo $list["memberName"]; ?><br>
         <br>
