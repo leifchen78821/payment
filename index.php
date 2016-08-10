@@ -1,4 +1,20 @@
 <?php
+// ----------------------------------------
+// FOR UPDATE
+//
+// 加上排他鎖(FOR UPDATE)的資料，
+// 其他連線能用普通的 select ... 讀取鎖定的資料，
+// 但不能用 select ... lock in share mode 讀取鎖定的資料
+// ( select ... from ... for update 當然也不行)。
+//
+// ----------------------------------------
+//
+// LOCK IN SHARE MODE
+//
+// 在 select 過程遇到的資料列加上共享鎖(LOCK IN SHARE MODE)。
+// 加上共享鎖的資料，其他連線還是能讀取。
+// 加上共享鎖的資料，也允許其他連線再執行 select ... lock in share mode。
+// ----------------------------------------
 
 class Payment
 {
@@ -48,39 +64,39 @@ class Payment
     {
         try {
             $this->db->beginTransaction();
-            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id FOR UPDATE ;";
+            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id FOR UPDATE;";
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
             $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
             $nowMoney = $result[0]["totalAssets"];
-    
+
             if ($nowMoney >= $money) {
-    
+
                 // ----------------------------------------
                 // 更新會員資料
                 // ----------------------------------------
-    
+
                 $totalMoney = $nowMoney - $money;
-                $sql = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `memberName` = :id"; 
+                $sql = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `memberName` = :id";
                 $prepare = $this->db->prepare($sql);
                 $prepare->bindParam(':totalMoney', $totalMoney);
                 $prepare->bindParam(':id', $this->id);
                 $prepare->execute();
-    
+
                 // ----------------------------------------
                 // 更新動作明細
                 // ----------------------------------------
-    
+
                 date_default_timezone_set('Asia/Taipei');
                 $time = date("Y-m-d H:i:s");
                 $action = 1;
-    
+
                 $sql = "INSERT INTO `TransactionDetails` ".
                        "(`memberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)".
                        "VALUES".
                        "(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
-    
+
                 $prepare = $this->db->prepare($sql);
                 $prepare->bindParam(':id', $this->id);
                 $prepare->bindParam(':time', $time);
@@ -89,7 +105,7 @@ class Payment
                 $prepare->bindParam(':money', $money);
                 $prepare->bindParam(':afterTotalAssets', $totalMoney);
                 $prepare->execute();
-    
+
                 echo "<script language='JavaScript'>";
                 echo "alert('出款完成');location.href='/_payment/';";
                 echo "</script>";
@@ -117,31 +133,31 @@ class Payment
             $prepare->execute();
             $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
             $nowMoney = $result[0]["totalAssets"];
-    
+
             // ----------------------------------------
             // 更新會員資料
             // ----------------------------------------
-    
+
             $totalMoney = $nowMoney + $money;
-            $sql = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `memberName` = :id"; 
+            $sql = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `memberName` = :id";
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':totalMoney', $totalMoney);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
-    
+
             // ----------------------------------------
             // 更新動作明細
             // ----------------------------------------
-    
+
             date_default_timezone_set('Asia/Taipei');
             $time = date("Y-m-d H:i:s");
             $action = 0;
-    
+
             $sql = "INSERT INTO `TransactionDetails` ".
                    "(`memberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)".
                    "VALUES".
                    "(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
-    
+
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->bindParam(':time', $time);
@@ -150,7 +166,7 @@ class Payment
             $prepare->bindParam(':money', $money);
             $prepare->bindParam(':afterTotalAssets', $totalMoney);
             $prepare->execute();
-    
+
             echo "<script language='JavaScript'>";
             echo "alert('入款完成');location.href='/_payment/';";
             echo "</script>";
