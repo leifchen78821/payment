@@ -32,6 +32,23 @@ class Payment
     }
 
     // ----------------------------------------
+    // 新增使用者
+    // ----------------------------------------
+    function addNewMember($newMemberName)
+    {
+        $sql = "INSERT INTO `MemberData` ".
+               "(`memberName`, `totalAssets`)".
+               "VALUES ".
+               "(:newMemberName, '0');";
+        $prepare = $this->db->prepare($sql);
+        $prepare->bindParam(':newMemberName', $newMemberName);
+        $prepare->execute();
+        echo "<script language='JavaScript'>";
+        echo "alert('新增使用者 : ". $newMemberName." 成功');location.href='/_payment/';";
+        echo "</script>";
+    }
+
+    // ----------------------------------------
     // 取得基本資料
     // ----------------------------------------
     function takeMemberData()
@@ -182,6 +199,10 @@ $memberData = new Payment();
 $basicMemberData = $memberData->takeMemberData();
 $basicTransactionDetails = $memberData->takeTransactionDetails();
 
+if (isset($_POST["btnAddMember"])) {
+    $memberData->addNewMember($_POST["txtAddNewMember"]);
+}
+
 if (isset($_POST["btnDispensing"])) {
     if ($_POST["txtMoneyCount"] <= 0) {
         echo "<script language='JavaScript'>";
@@ -209,13 +230,16 @@ if (isset($_POST["btnDeposit"])) {
         <meta http-equiv = "Content-Type" content = "text/html ; charset = UTF-8">
     </head>
     <body>
+        <form id = "formcreate" name = "formcreate" method = "post">
+        新增使用者 :
+        <input type="text" name="txtAddNewMember" id="txtAddNewMember">
+        <input type = "submit" name = "btnAddMember" id = "btnAddMember" value = "新增"><br><br>
         <?php foreach($basicMemberData as $list): ?>
         帳號 : <?php echo $list["memberName"]; ?><br>
         <br>
         餘額 : <?php echo $list["totalAssets"]; ?><br>
         <br>
         <?php endforeach ?>
-        <form id = "formcreate" name = "formcreate" method = "post">
             執行動作 :
             <input type="text" name="txtMoneyCount" id="txtMoneyCount"><br><br>
             <input type = "submit" name = "btnDispensing" id = "btnDispensing" value = "出款">
