@@ -63,7 +63,7 @@ class Payment
         $prepare->execute();
 
         echo "<script language='JavaScript'>";
-        echo "alert('新增使用者 : " . $newMemberName . " 成功');location.href='/_payment/index_Pessimistic_Locking.php';";
+        echo "alert('新增使用者 : " . $newMemberName . " 成功');location.href='/_payment/IndexPessimisticLocking.php';";
         echo "</script>";
     }
 
@@ -82,7 +82,7 @@ class Payment
     function selectMember($memberSelected)
     {
         echo "<script language='JavaScript'>";
-        echo "alert('選擇使用者 : " . $memberSelected . "');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $memberSelected . "';";
+        echo "alert('選擇使用者 : " . $memberSelected . "');location.href='/_payment/IndexPessimisticLocking.php?member=" . $memberSelected . "';";
         echo "</script>";
     }
 
@@ -115,7 +115,7 @@ class Payment
     {
         try {
             $this->db->beginTransaction();
-            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id FOR UPDATE";
+            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id LOCK IN SHARE MODE";
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
@@ -146,17 +146,17 @@ class Payment
                 $prepare->execute();
 
                 echo "<script language='JavaScript'>";
-                echo "alert('出款完成');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
+                echo "alert('出款完成');location.href='/_payment/IndexPessimisticLocking.php?member=" . $_GET["member"] . "';";
                 echo "</script>";
             } else {
                 echo "<script language='JavaScript'>";
-                echo "alert('出款失敗');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
+                echo "alert('出款失敗');location.href='/_payment/IndexPessimisticLocking.php?member=" . $_GET["member"] . "';";
                 echo "</script>";
             }
             $this->db->commit();
         } catch (Exception $err) {
             echo "<script language='JavaScript'>";
-            echo "alert('" . $err->getMessage() . "');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
+            echo "alert('" . $err->getMessage() . "');location.href='/_payment/IndexPessimisticLocking.php?member=" . $_GET["member"] . "';";
             echo "</script>";
 
             $this->db->rollback();
@@ -168,7 +168,7 @@ class Payment
     {
         try {
             $this->db->beginTransaction();
-            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id FOR UPDATE";
+            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id LOCK IN SHARE MODE";
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
@@ -198,13 +198,13 @@ class Payment
             $prepare->execute();
 
             echo "<script language='JavaScript'>";
-            echo "alert('入款完成');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
+            echo "alert('入款完成');location.href='/_payment/IndexPessimisticLocking.php?member=" . $_GET["member"] . "';";
             echo "</script>";
 
             $this->db->commit();
         } catch (Exception $err) {
             echo "<script language='JavaScript'>";
-            echo "alert('" . $err->getMessage() . "');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
+            echo "alert('" . $err->getMessage() . "');location.href='/_payment/IndexPessimisticLocking.php?member=" . $_GET["member"] . "';";
             echo "</script>";
 
             $this->db->rollback();
@@ -232,7 +232,7 @@ if (isset($_POST["btnSelectMember"])) {
 if (isset($_POST["btnDispensing"])) {
     if ($_POST["txtMoneyCount"] <= 0) {
         echo "<script language='JavaScript'>";
-        echo "alert('輸入金額不可低於0');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
+        echo "alert('輸入金額不可低於0');location.href='/_payment/IndexPessimisticLocking.php?member=" . $_GET["member"] . "';";
         echo "</script>";
     } else {
         $memberData->dispensingMoney($_POST["txtMoneyCount"]);
@@ -243,7 +243,7 @@ if (isset($_POST["btnDispensing"])) {
 if (isset($_POST["btnDeposit"])) {
     if ($_POST["txtMoneyCount"] <= 0) {
         echo "<script language='JavaScript'>";
-        echo "alert('輸入金額不可低於0');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
+        echo "alert('輸入金額不可低於0');location.href='/_payment/IndexPessimisticLocking.php?member=" . $_GET["member"] . "';";
         echo "</script>";
     } else {
         $memberData->depositMoney($_POST["txtMoneyCount"]);
