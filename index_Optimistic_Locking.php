@@ -124,22 +124,27 @@ class Payment
     {
         try {
             $this->db->beginTransaction();
-            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id FOR UPDATE;";
+            $sql = "SELECT `totalAssets`, `numberTicket` FROM `MemberData` WHERE `memberName` = :id FOR UPDATE;";
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
             $result = $prepare->fetch(PDO::FETCH_ASSOC);
             $nowMoney = $result["totalAssets"];
+            $nowNumberTicket = $result["numberTicket"];
 
             if ($nowMoney >= $money) {
                 // ----------------------------------------
                 // 更新會員資料
                 // ----------------------------------------
                 $totalMoney = $nowMoney - $money;
-                $sql = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `memberName` = :id";
+                $sql = "UPDATE `MemberData` SET " .
+                    "`totalAssets` = :totalMoney, `numberTicket` = `numberTicket` + 1 " .
+                    "WHERE " .
+                    "`memberName` = :id AND `numberTicket` = :numberTicket";
                 $prepare = $this->db->prepare($sql);
                 $prepare->bindParam(':totalMoney', $totalMoney);
                 $prepare->bindParam(':id', $this->id);
+                $prepare->bindParam(':numberTicket', $nowNumberTicket);
                 $prepare->execute();
 
                 // ----------------------------------------
