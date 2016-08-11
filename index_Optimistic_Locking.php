@@ -58,9 +58,9 @@ class Payment
     function addNewMember($newMemberName)
     {
         $sql = "INSERT INTO `MemberData` " .
-            "(`memberName`, `totalAssets`)" .
+            "(`memberName`, `totalAssets`, `numberTicket`)" .
             "VALUES " .
-            "(:newMemberName, '0');";
+            "(:newMemberName, '0', '1');";
         $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':newMemberName', $newMemberName);
         $prepare->execute();
