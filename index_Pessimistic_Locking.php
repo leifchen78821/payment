@@ -135,10 +135,9 @@ class Payment
                 // ----------------------------------------
                 // 更新會員資料
                 // ----------------------------------------
-                $totalMoney = $nowMoney - $money;
-                $sql = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `memberName` = :id";
+                $sql = "UPDATE `MemberData` SET `totalAssets` = `totalAssets` - :money WHERE `memberName` = :id";
                 $prepare = $this->db->prepare($sql);
-                $prepare->bindParam(':totalMoney', $totalMoney);
+                $prepare->bindParam(':money', $money);
                 $prepare->bindParam(':id', $this->id);
                 $prepare->execute();
 
@@ -147,20 +146,17 @@ class Payment
                 // ----------------------------------------
                 date_default_timezone_set('Asia/Taipei');
                 $time = date("Y-m-d H:i:s");
-                $action = 1;
 
                 $sql = "INSERT INTO `TransactionDetails` " .
-                    "(`memberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)" .
+                    "(`memberName`, `dateTime`, `money`, `endActionTotalAssets`)" .
                     "VALUES" .
-                    "(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
+                    "(:id, :time, - :money, :nowMoney - :money)";
 
                 $prepare = $this->db->prepare($sql);
                 $prepare->bindParam(':id', $this->id);
                 $prepare->bindParam(':time', $time);
-                $prepare->bindParam(':preTotalAssets', $nowMoney);
-                $prepare->bindParam(':action', $action);
+                $prepare->bindParam(':nowMoney', $nowMoney);
                 $prepare->bindParam(':money', $money);
-                $prepare->bindParam(':afterTotalAssets', $totalMoney);
                 $prepare->execute();
 
                 echo "<script language='JavaScript'>";
@@ -197,12 +193,12 @@ class Payment
             // ----------------------------------------
             // 更新會員資料
             // ----------------------------------------
-            $totalMoney = $nowMoney + $money;
-            $sql = "UPDATE `MemberData` SET `totalAssets` = :totalMoney WHERE `memberName` = :id";
+            $sql = "UPDATE `MemberData` SET `totalAssets` = `totalAssets` + :money WHERE `memberName` = :id";
             $prepare = $this->db->prepare($sql);
-            $prepare->bindParam(':totalMoney', $totalMoney);
+            $prepare->bindParam(':money', $money);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
+
 
             // ----------------------------------------
             // 更新動作明細
@@ -212,17 +208,15 @@ class Payment
             $action = 0;
 
             $sql = "INSERT INTO `TransactionDetails` " .
-                "(`memberName`, `dateTime`, `preTotalAssets`, `action`, `money`, `afterTotalAssets`)" .
+                "(`memberName`, `dateTime`, `money`, `endActionTotalAssets`)" .
                 "VALUES" .
-                "(:id, :time, :preTotalAssets, :action, :money, :afterTotalAssets)";
+                "(:id, :time, :money, :nowMoney + :money)";
 
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->bindParam(':time', $time);
-            $prepare->bindParam(':preTotalAssets', $nowMoney);
-            $prepare->bindParam(':action', $action);
+            $prepare->bindParam(':nowMoney', $nowMoney);
             $prepare->bindParam(':money', $money);
-            $prepare->bindParam(':afterTotalAssets', $totalMoney);
             $prepare->execute();
 
             echo "<script language='JavaScript'>";
@@ -335,7 +329,7 @@ if (isset($_POST["btnDeposit"])) {
                               提款
                               <?php endif ?></td>
             <td width = "25%"><?php echo abs($list["money"]); ?></td>
-            <td width = "25%"><?php echo $list["afterTotalAssets"]; ?></td>
+            <td width = "25%"><?php echo $list["endActionTotalAssets"]; ?></td>
             </tr>
             <?php endforeach ?>
         </table>
