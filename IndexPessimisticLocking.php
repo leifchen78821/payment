@@ -33,19 +33,19 @@
 */
 
 /**
-* 此版本的資料庫排隊方式為樂觀鎖(Optimistic locking)
-* 新增資料庫欄位(號碼牌)，依據號碼排入Update
+* 此版本的資料庫排隊方式為悲觀鎖(Pessimistic Locking)
+* FOR UPDATE
 */
 
 class Payment
 {
-
     // 定義帳號，資料庫
     public $db = null;
     public $id = null;
 
     function __construct()
     {
+        date_default_timezone_set('Asia/Taipei');
         $this->id = $_GET["member"];
         $this->db = new PDO("mysql:host=localhost;dbname=PayMent", "root", "");
         $this->db->exec("SET CHARACTER SET utf8");
@@ -63,7 +63,7 @@ class Payment
         $prepare->execute();
 
         echo "<script language='JavaScript'>";
-        echo "alert('新增使用者 : " . $newMemberName . " 成功');location.href='/_payment/index_Optimistic_Locking.php';";
+        echo "alert('新增使用者 : " . $newMemberName . " 成功');location.href='/_payment/index_Pessimistic_Locking.php';";
         echo "</script>";
     }
 
@@ -82,14 +82,14 @@ class Payment
     function selectMember($memberSelected)
     {
         echo "<script language='JavaScript'>";
-        echo "alert('選擇使用者 : " . $memberSelected . "');location.href='/_payment/index_Optimistic_Locking.php?member=" . $memberSelected . "';";
+        echo "alert('選擇使用者 : " . $memberSelected . "');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $memberSelected . "';";
         echo "</script>";
     }
 
     // 取得基本資料
     function takeMemberData()
     {
-        $sql = "SELECT * FROM `MemberData` WHERE `memberName` = :id ;";
+        $sql = "SELECT * FROM `MemberData` WHERE `memberName` = :id";
         $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':id', $this->id);
         $prepare->execute();
@@ -101,7 +101,7 @@ class Payment
     // 取得明細資料
     function takeTransactionDetails()
     {
-        $sql = "SELECT * FROM `TransactionDetails` WHERE `memberName` = :id ;";
+        $sql = "SELECT * FROM `TransactionDetails` WHERE `memberName` = :id";
         $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':id', $this->id);
         $prepare->execute();
@@ -115,39 +115,22 @@ class Payment
     {
         try {
             $this->db->beginTransaction();
-            $sql = "SELECT `totalAssets`, `numberTicket` FROM `MemberData` WHERE `memberName` = :id ;";
+            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id FOR UPDATE";
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
             $result = $prepare->fetch(PDO::FETCH_ASSOC);
             $nowMoney = $result["totalAssets"];
-            $nowNumberTicket = $result["numberTicket"];
 
             if ($nowMoney >= $money) {
                 // 更新會員資料
-                $sql = "UPDATE `MemberData` SET " .
-                    "`totalAssets` = `totalAssets` - :money, `numberTicket` = `numberTicket` + 1 " .
-                    "WHERE " .
-                    "`memberName` = :id AND `numberTicket` = :numberTicket";
+                $sql = "UPDATE `MemberData` SET `totalAssets` = `totalAssets` - :money WHERE `memberName` = :id";
                 $prepare = $this->db->prepare($sql);
                 $prepare->bindParam(':money', $money);
                 $prepare->bindParam(':id', $this->id);
-                $prepare->bindParam(':numberTicket', $nowNumberTicket);
                 $prepare->execute();
-
-                // 比較號碼牌，後來的人會出錯
-                $sql = "SELECT `numberTicket` FROM `MemberData` WHERE `memberName` = :id ;";
-                $prepare = $this->db->prepare($sql);
-                $prepare->bindParam(':id', $this->id);
-                $prepare->execute();
-                $result = $prepare->fetch(PDO::FETCH_ASSOC);
-                $sqlNumberTicket = $result["numberTicket"];
-                if($sqlNumberTicket != $nowNumberTicket) {
-                    throw new Exception("有人比你早進來呦!!無法執行");
-                }
 
                 // 更新動作明細
-                date_default_timezone_set('Asia/Taipei');
                 $time = date("Y-m-d H:i:s");
 
                 $sql = "INSERT INTO `TransactionDetails` " .
@@ -163,17 +146,17 @@ class Payment
                 $prepare->execute();
 
                 echo "<script language='JavaScript'>";
-                echo "alert('出款完成');location.href='/_payment/index_Optimistic_Locking.php?member=" . $_GET["member"] . "';";
+                echo "alert('出款完成');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
                 echo "</script>";
             } else {
                 echo "<script language='JavaScript'>";
-                echo "alert('出款失敗');location.href='/_payment/index_Optimistic_Locking.php?member=" . $_GET["member"] . "';";
+                echo "alert('出款失敗');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
                 echo "</script>";
             }
             $this->db->commit();
         } catch (Exception $err) {
             echo "<script language='JavaScript'>";
-            echo "alert('" . $err->getMessage() . "');location.href='/_payment/index_Optimistic_Locking.php?member=" . $_GET["member"] . "';";
+            echo "alert('" . $err->getMessage() . "');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
             echo "</script>";
 
             $this->db->rollback();
@@ -185,38 +168,21 @@ class Payment
     {
         try {
             $this->db->beginTransaction();
-            $sql = "SELECT `totalAssets`, `numberTicket` FROM `MemberData` WHERE `memberName` = :id ;";
+            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id FOR UPDATE";
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
             $result = $prepare->fetch(PDO::FETCH_ASSOC);
             $nowMoney = $result["totalAssets"];
-            $nowNumberTicket = $result["numberTicket"];
 
             // 更新會員資料
-                $sql = "UPDATE `MemberData` SET " .
-                    "`totalAssets` = `totalAssets` + :money, `numberTicket` = `numberTicket` + 1 " .
-                    "WHERE " .
-                    "`memberName` = :id AND `numberTicket` = :numberTicket";
-                $prepare = $this->db->prepare($sql);
-                $prepare->bindParam(':money', $money);
-                $prepare->bindParam(':id', $this->id);
-                $prepare->bindParam(':numberTicket', $nowNumberTicket);
-                $prepare->execute();
-
-            // 比較號碼牌，後來的人會出錯
-            $sql = "SELECT `numberTicket` FROM `MemberData` WHERE `memberName` = :id ;";
+            $sql = "UPDATE `MemberData` SET `totalAssets` = `totalAssets` + :money WHERE `memberName` = :id";
             $prepare = $this->db->prepare($sql);
+            $prepare->bindParam(':money', $money);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
-            $result = $prepare->fetch(PDO::FETCH_ASSOC);
-            $sqlNumberTicket = $result["numberTicket"];
-            if($sqlNumberTicket != $nowNumberTickets) {
-                throw new Exception("有人比你早進來呦!!無法執行");
-            }
 
             // 更新動作明細
-            date_default_timezone_set('Asia/Taipei');
             $time = date("Y-m-d H:i:s");
 
             $sql = "INSERT INTO `TransactionDetails` " .
@@ -232,13 +198,13 @@ class Payment
             $prepare->execute();
 
             echo "<script language='JavaScript'>";
-            echo "alert('入款完成');location.href='/_payment/index_Optimistic_Locking.php?member=" . $_GET["member"] . "';";
+            echo "alert('入款完成');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
             echo "</script>";
 
             $this->db->commit();
         } catch (Exception $err) {
             echo "<script language='JavaScript'>";
-            echo "alert('" . $err->getMessage() . "');location.href='/_payment/index_Optimistic_Locking.php?member=" . $_GET["member"] . "';";
+            echo "alert('" . $err->getMessage() . "');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
             echo "</script>";
 
             $this->db->rollback();
@@ -266,7 +232,7 @@ if (isset($_POST["btnSelectMember"])) {
 if (isset($_POST["btnDispensing"])) {
     if ($_POST["txtMoneyCount"] <= 0) {
         echo "<script language='JavaScript'>";
-        echo "alert('輸入金額不可低於0');location.href='/_payment/index_Optimistic_Locking.php?member=" . $_GET["member"] . "';";
+        echo "alert('輸入金額不可低於0');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
         echo "</script>";
     } else {
         $memberData->dispensingMoney($_POST["txtMoneyCount"]);
@@ -277,7 +243,7 @@ if (isset($_POST["btnDispensing"])) {
 if (isset($_POST["btnDeposit"])) {
     if ($_POST["txtMoneyCount"] <= 0) {
         echo "<script language='JavaScript'>";
-        echo "alert('輸入金額不可低於0');location.href='/_payment/index_Optimistic_Locking.php?member=" . $_GET["member"] . "';";
+        echo "alert('輸入金額不可低於0');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
         echo "</script>";
     } else {
         $memberData->depositMoney($_POST["txtMoneyCount"]);
