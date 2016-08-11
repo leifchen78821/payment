@@ -124,7 +124,7 @@ class Payment
     {
         try {
             $this->db->beginTransaction();
-            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id FOR UPDATE;";
+            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id LOCK IN SHARE MODE;";
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
@@ -183,7 +183,7 @@ class Payment
     {
         try {
             $this->db->beginTransaction();
-            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id FOR UPDATE;";
+            $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id LOCK IN SHARE MODE;";
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
