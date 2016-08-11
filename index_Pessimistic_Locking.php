@@ -170,7 +170,7 @@ class Payment
             $this->db->commit();
         } catch (Exception $err) {
             echo "<script language='JavaScript'>";
-            echo "alert('" . $err . "');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
+            echo "alert('" . $err->getMessage() . "');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
             echo "</script>";
             $this->db->rollback();
         }
@@ -225,7 +225,7 @@ class Payment
             $this->db->commit();
         } catch (Exception $err) {
             echo "<script language='JavaScript'>";
-            echo "alert('" . $err . "');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
+            echo "alert('" . $err->getMessage() . "');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
             echo "</script>";
             $this->db->rollback();
         }
