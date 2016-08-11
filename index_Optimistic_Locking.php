@@ -65,7 +65,7 @@ class Payment
         $prepare->bindParam(':newMemberName', $newMemberName);
         $prepare->execute();
         echo "<script language='JavaScript'>";
-        echo "alert('新增使用者 : " . $newMemberName . " 成功');location.href='/_payment/';";
+        echo "alert('新增使用者 : " . $newMemberName . " 成功');location.href='/_payment/index_Pessimistic_Locking.php';";
         echo "</script>";
     }
 

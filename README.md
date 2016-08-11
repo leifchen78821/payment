@@ -1,2 +1,4 @@
 # payment
 #簡易銀行系統
+#index_Optimistic_Locking 是以樂觀鎖定的方式進行race condition的阻止動作
+#index_Pessimistic_Locking 是以悲觀鎖定進行之
