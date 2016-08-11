@@ -1,47 +1,45 @@
 <?php
-//**********************************************
-// FOR UPDATE
-//
-// 加上排他鎖(FOR UPDATE)的資料，
-// 其他連線能用普通的 select ... 讀取鎖定的資料，
-// 但不能用 select ... lock in share mode 讀取鎖定的資料
-// ( select ... from ... for update 當然也不行)。
-//
-// ----------------------------------------
-// LOCK IN SHARE MODE
-//
-// 在 select 過程遇到的資料列加上共享鎖(LOCK IN SHARE MODE)。
-// 加上共享鎖的資料，其他連線還是能讀取。
-// 加上共享鎖的資料，也允許其他連線再執行 select ... lock in share mode。
-//
-//**********************************************
-// PDO::FETCH_BOTH，(預設)可不寫
-//
-// 同時取得陣列key的編號與SQL欄位名稱
-//
-// ----------------------------------------
-// PDO::FETCH_ASSOC
-//
-// 只取得欄位名稱
-//
-//**********************************************
-// 資料庫寫法技巧
-//
-// 1. 資料庫計算可在sql語法內計算
-// 2. 存提款可直接以 ±值 進行欄位存取，節省欄位
-//
-//**********************************************
+/**
+* FOR UPDATE
+*
+* 加上排他鎖(FOR UPDATE)的資料，
+* 其他連線能用普通的 select ... 讀取鎖定的資料，
+* 但不能用 select ... lock in share mode 讀取鎖定的資料
+* ( select ... from ... for update 當然也不行)。
+*
+* ----------------------------
+* LOCK IN SHARE MODE
+*
+* 在 select 過程遇到的資料列加上共享鎖(LOCK IN SHARE MODE)。
+* 加上共享鎖的資料，其他連線還是能讀取。
+* 加上共享鎖的資料，也允許其他連線再執行 select ... lock in share mode。
+*
+* ************************************************************
+* PDO::FETCH_BOTH，(預設)可不寫
+*
+* 同時取得陣列key的編號與SQL欄位名稱
+*
+* ----------------------------
+* PDO::FETCH_ASSOC
+*
+* 只取得欄位名稱
+*
+* ************************************************************
+* 資料庫寫法技巧
+*
+* 1. 資料庫計算可在sql語法內計算
+* 2. 存提款可直接以 ±值 進行欄位存取，節省欄位
+*
+*/
 
-// ----------------------------------------
-// 此版本的資料庫排隊方式為悲觀鎖(Pessimistic Locking)
-// FOR UPDATE
-// ----------------------------------------
+/**
+* 此版本的資料庫排隊方式為悲觀鎖(Pessimistic Locking)
+* FOR UPDATE
+*/
 
 class Payment
 {
-    // ----------------------------------------
     // 定義帳號，資料庫
-    // ----------------------------------------
     public $db = null;
     public $id = null;
 
@@ -52,9 +50,7 @@ class Payment
         $this->db->exec("SET CHARACTER SET utf8");
     }
 
-    // ----------------------------------------
     // 新增使用者
-    // ----------------------------------------
     function addNewMember($newMemberName)
     {
         $sql = "INSERT INTO `MemberData` " .
@@ -64,26 +60,24 @@ class Payment
         $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':newMemberName', $newMemberName);
         $prepare->execute();
+
         echo "<script language='JavaScript'>";
         echo "alert('新增使用者 : " . $newMemberName . " 成功');location.href='/_payment/index_Pessimistic_Locking.php';";
         echo "</script>";
     }
 
-    // ----------------------------------------
     // 取得下拉選單資料
-    // ----------------------------------------
     function takeMemberList()
     {
         $sql = "SELECT `memberName` FROM `MemberData`";
         $prepare = $this->db->prepare($sql);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
+
         return $result;
     }
 
-    // ----------------------------------------
     // 依據下拉式選單選擇後取得新id
-    // ----------------------------------------
     function selectMember($memberSelected)
     {
         echo "<script language='JavaScript'>";
@@ -91,9 +85,7 @@ class Payment
         echo "</script>";
     }
 
-    // ----------------------------------------
     // 取得基本資料
-    // ----------------------------------------
     function takeMemberData()
     {
         $sql = "SELECT * FROM `MemberData` WHERE `memberName` = :id ;";
@@ -101,12 +93,11 @@ class Payment
         $prepare->bindParam(':id', $this->id);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
+
         return $result;
     }
 
-    // ----------------------------------------
     // 取得明細資料
-    // ----------------------------------------
     function takeTransactionDetails()
     {
         $sql = "SELECT * FROM `TransactionDetails` WHERE `memberName` = :id ;";
@@ -114,12 +105,11 @@ class Payment
         $prepare->bindParam(':id', $this->id);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
+
         return $result;
     }
 
-    // ----------------------------------------
     // 提(出)款
-    // ----------------------------------------
     function dispensingMoney($money)
     {
         try {
@@ -132,18 +122,14 @@ class Payment
             $nowMoney = $result["totalAssets"];
 
             if ($nowMoney >= $money) {
-                // ----------------------------------------
                 // 更新會員資料
-                // ----------------------------------------
                 $sql = "UPDATE `MemberData` SET `totalAssets` = `totalAssets` - :money WHERE `memberName` = :id";
                 $prepare = $this->db->prepare($sql);
                 $prepare->bindParam(':money', $money);
                 $prepare->bindParam(':id', $this->id);
                 $prepare->execute();
 
-                // ----------------------------------------
                 // 更新動作明細
-                // ----------------------------------------
                 date_default_timezone_set('Asia/Taipei');
                 $time = date("Y-m-d H:i:s");
 
@@ -172,13 +158,12 @@ class Payment
             echo "<script language='JavaScript'>";
             echo "alert('" . $err->getMessage() . "');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
             echo "</script>";
+
             $this->db->rollback();
         }
     }
 
-    // ----------------------------------------
     // 存(入)款
-    // ----------------------------------------
     function depositMoney($money)
     {
         try {
@@ -190,19 +175,14 @@ class Payment
             $result = $prepare->fetch(PDO::FETCH_ASSOC);
             $nowMoney = $result["totalAssets"];
 
-            // ----------------------------------------
             // 更新會員資料
-            // ----------------------------------------
             $sql = "UPDATE `MemberData` SET `totalAssets` = `totalAssets` + :money WHERE `memberName` = :id";
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':money', $money);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
 
-
-            // ----------------------------------------
             // 更新動作明細
-            // ----------------------------------------
             date_default_timezone_set('Asia/Taipei');
             $time = date("Y-m-d H:i:s");
 
@@ -221,11 +201,13 @@ class Payment
             echo "<script language='JavaScript'>";
             echo "alert('入款完成');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
             echo "</script>";
+
             $this->db->commit();
         } catch (Exception $err) {
             echo "<script language='JavaScript'>";
             echo "alert('" . $err->getMessage() . "');location.href='/_payment/index_Pessimistic_Locking.php?member=" . $_GET["member"] . "';";
             echo "</script>";
+
             $this->db->rollback();
         }
     }
@@ -237,23 +219,17 @@ $basicMemberData = $memberData->takeMemberData();
 $basicMemberList = $memberData->takeMemberList();
 $basicTransactionDetails = $memberData->takeTransactionDetails();
 
-// ----------------------------------------
 // 新增會員按鈕
-// ----------------------------------------
 if (isset($_POST["btnAddMember"])) {
     $memberData->addNewMember($_POST["txtAddNewMember"]);
 }
 
-// ----------------------------------------
 // 選擇會員按鈕
-// ----------------------------------------
 if (isset($_POST["btnSelectMember"])) {
     $memberData->selectMember($_POST["select_one"]);
 }
 
-// ----------------------------------------
 // 出款按鈕
-// ----------------------------------------
 if (isset($_POST["btnDispensing"])) {
     if ($_POST["txtMoneyCount"] <= 0) {
         echo "<script language='JavaScript'>";
@@ -264,9 +240,7 @@ if (isset($_POST["btnDispensing"])) {
     }
 }
 
-// ----------------------------------------
 // 入款按鈕
-// ----------------------------------------
 if (isset($_POST["btnDeposit"])) {
     if ($_POST["txtMoneyCount"] <= 0) {
         echo "<script language='JavaScript'>";

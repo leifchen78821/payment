@@ -61,6 +61,7 @@ class Payment
         $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':newMemberName', $newMemberName);
         $prepare->execute();
+
         echo "<script language='JavaScript'>";
         echo "alert('新增使用者 : " . $newMemberName . " 成功');location.href='/_payment/index_Optimistic_Locking.php';";
         echo "</script>";
@@ -169,12 +170,12 @@ class Payment
                 echo "alert('出款失敗');location.href='/_payment/index_Optimistic_Locking.php?member=" . $_GET["member"] . "';";
                 echo "</script>";
             }
-
             $this->db->commit();
         } catch (Exception $err) {
             echo "<script language='JavaScript'>";
             echo "alert('" . $err->getMessage() . "');location.href='/_payment/index_Optimistic_Locking.php?member=" . $_GET["member"] . "';";
             echo "</script>";
+
             $this->db->rollback();
         }
     }
@@ -233,11 +234,13 @@ class Payment
             echo "<script language='JavaScript'>";
             echo "alert('入款完成');location.href='/_payment/index_Optimistic_Locking.php?member=" . $_GET["member"] . "';";
             echo "</script>";
+
             $this->db->commit();
         } catch (Exception $err) {
             echo "<script language='JavaScript'>";
             echo "alert('" . $err->getMessage() . "');location.href='/_payment/index_Optimistic_Locking.php?member=" . $_GET["member"] . "';";
             echo "</script>";
+
             $this->db->rollback();
         }
     }
