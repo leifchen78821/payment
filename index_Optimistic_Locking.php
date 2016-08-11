@@ -341,7 +341,7 @@ if (isset($_POST["btnDeposit"])) {
         <br>
         <?php endforeach ?>
             執行動作 :
-            <input type="text" name="txtMoneyCount" id="txtMoneyCount"><br><br>
+            <input type = "text" name = "txtMoneyCount" id = "txtMoneyCount" pattern = "[0-9]{1,20}"><br><br>
             <input type = "submit" name = "btnDispensing" id = "btnDispensing" value = "出款">
             &nbsp;<input type = "submit" name = "btnDeposit" id = "btnDeposit" value = "入款"><br>
         </form>
