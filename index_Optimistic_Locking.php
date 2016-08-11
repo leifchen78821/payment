@@ -1,47 +1,46 @@
 <?php
-//**********************************************
-// FOR UPDATE
-//
-// 加上排他鎖(FOR UPDATE)的資料，
-// 其他連線能用普通的 select ... 讀取鎖定的資料，
-// 但不能用 select ... lock in share mode 讀取鎖定的資料
-// ( select ... from ... for update 當然也不行)。
-//
-// ----------------------------------------
-// LOCK IN SHARE MODE
-//
-// 在 select 過程遇到的資料列加上共享鎖(LOCK IN SHARE MODE)。
-// 加上共享鎖的資料，其他連線還是能讀取。
-// 加上共享鎖的資料，也允許其他連線再執行 select ... lock in share mode。
-//
-//**********************************************
-// PDO::FETCH_BOTH，(預設)可不寫
-//
-// 同時取得陣列key的編號與SQL欄位名稱
-//
-// ----------------------------------------
-// PDO::FETCH_ASSOC
-//
-// 只取得欄位名稱
-//
-//**********************************************
-// 資料庫寫法技巧
-//
-// 1. 資料庫計算可在sql語法內計算
-// 2. 存提款可直接以 ±值 進行欄位存取，節省欄位
-//
-//**********************************************
+/**
+* FOR UPDATE
+*
+* 加上排他鎖(FOR UPDATE)的資料，
+* 其他連線能用普通的 select ... 讀取鎖定的資料，
+* 但不能用 select ... lock in share mode 讀取鎖定的資料
+* ( select ... from ... for update 當然也不行)。
+*
+* ----------------------------
+* LOCK IN SHARE MODE
+*
+* 在 select 過程遇到的資料列加上共享鎖(LOCK IN SHARE MODE)。
+* 加上共享鎖的資料，其他連線還是能讀取。
+* 加上共享鎖的資料，也允許其他連線再執行 select ... lock in share mode。
+*
+* ************************************************************
+* PDO::FETCH_BOTH，(預設)可不寫
+*
+* 同時取得陣列key的編號與SQL欄位名稱
+*
+* ----------------------------
+* PDO::FETCH_ASSOC
+*
+* 只取得欄位名稱
+*
+* ************************************************************
+* 資料庫寫法技巧
+*
+* 1. 資料庫計算可在sql語法內計算
+* 2. 存提款可直接以 ±值 進行欄位存取，節省欄位
+*
+*/
 
-// ----------------------------------------
-// 此版本的資料庫排隊方式為樂觀鎖(Optimistic locking)
-// 新增資料庫欄位(號碼牌)，依據號碼排入Update
-// ----------------------------------------
+/**
+* 此版本的資料庫排隊方式為樂觀鎖(Optimistic locking)
+* 新增資料庫欄位(號碼牌)，依據號碼排入Update
+*/
 
 class Payment
 {
-    // ----------------------------------------
+
     // 定義帳號，資料庫
-    // ----------------------------------------
     public $db = null;
     public $id = null;
 
@@ -52,9 +51,7 @@ class Payment
         $this->db->exec("SET CHARACTER SET utf8");
     }
 
-    // ----------------------------------------
     // 新增使用者
-    // ----------------------------------------
     function addNewMember($newMemberName)
     {
         $sql = "INSERT INTO `MemberData` " .
@@ -69,21 +66,18 @@ class Payment
         echo "</script>";
     }
 
-    // ----------------------------------------
     // 取得下拉選單資料
-    // ----------------------------------------
     function takeMemberList()
     {
         $sql = "SELECT `memberName` FROM `MemberData`";
         $prepare = $this->db->prepare($sql);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
+
         return $result;
     }
 
-    // ----------------------------------------
     // 依據下拉式選單選擇後取得新id
-    // ----------------------------------------
     function selectMember($memberSelected)
     {
         echo "<script language='JavaScript'>";
@@ -91,9 +85,7 @@ class Payment
         echo "</script>";
     }
 
-    // ----------------------------------------
     // 取得基本資料
-    // ----------------------------------------
     function takeMemberData()
     {
         $sql = "SELECT * FROM `MemberData` WHERE `memberName` = :id ;";
@@ -101,12 +93,11 @@ class Payment
         $prepare->bindParam(':id', $this->id);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
+
         return $result;
     }
 
-    // ----------------------------------------
     // 取得明細資料
-    // ----------------------------------------
     function takeTransactionDetails()
     {
         $sql = "SELECT * FROM `TransactionDetails` WHERE `memberName` = :id ;";
@@ -114,12 +105,11 @@ class Payment
         $prepare->bindParam(':id', $this->id);
         $prepare->execute();
         $result = $prepare->fetchAll(PDO::FETCH_ASSOC);
+
         return $result;
     }
 
-    // ----------------------------------------
     // 提(出)款
-    // ----------------------------------------
     function dispensingMoney($money)
     {
         try {
@@ -133,9 +123,7 @@ class Payment
             $nowNumberTicket = $result["numberTicket"];
 
             if ($nowMoney >= $money) {
-                // ----------------------------------------
                 // 更新會員資料
-                // ----------------------------------------
                 $sql = "UPDATE `MemberData` SET " .
                     "`totalAssets` = `totalAssets` - :money, `numberTicket` = `numberTicket` + 1 " .
                     "WHERE " .
@@ -146,22 +134,18 @@ class Payment
                 $prepare->bindParam(':numberTicket', $nowNumberTicket);
                 $prepare->execute();
 
-                // ----------------------------------------
                 // 比較號碼牌，後來的人會出錯
-                // ----------------------------------------
                 $sql = "SELECT `numberTicket` FROM `MemberData` WHERE `memberName` = :id ;";
                 $prepare = $this->db->prepare($sql);
                 $prepare->bindParam(':id', $this->id);
                 $prepare->execute();
                 $result = $prepare->fetch(PDO::FETCH_ASSOC);
                 $sqlNumberTicket = $result["numberTicket"];
-                if($sqlNumberTicket != $nowNumberTicket + 1) {
+                if($sqlNumberTicket != $nowNumberTicket) {
                     throw new Exception("有人比你早進來呦!!無法執行");
                 }
 
-                // ----------------------------------------
                 // 更新動作明細
-                // ----------------------------------------
                 date_default_timezone_set('Asia/Taipei');
                 $time = date("Y-m-d H:i:s");
 
@@ -195,9 +179,7 @@ class Payment
         }
     }
 
-    // ----------------------------------------
     // 存(入)款
-    // ----------------------------------------
     function depositMoney($money)
     {
         try {
@@ -210,9 +192,7 @@ class Payment
             $nowMoney = $result["totalAssets"];
             $nowNumberTicket = $result["numberTicket"];
 
-            // ----------------------------------------
             // 更新會員資料
-            // ----------------------------------------
                 $sql = "UPDATE `MemberData` SET " .
                     "`totalAssets` = `totalAssets` + :money, `numberTicket` = `numberTicket` + 1 " .
                     "WHERE " .
@@ -223,22 +203,18 @@ class Payment
                 $prepare->bindParam(':numberTicket', $nowNumberTicket);
                 $prepare->execute();
 
-            // ----------------------------------------
             // 比較號碼牌，後來的人會出錯
-            // ----------------------------------------
             $sql = "SELECT `numberTicket` FROM `MemberData` WHERE `memberName` = :id ;";
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
             $result = $prepare->fetch(PDO::FETCH_ASSOC);
             $sqlNumberTicket = $result["numberTicket"];
-            if($sqlNumberTicket != $nowNumberTicket + 1) {
+            if($sqlNumberTicket != $nowNumberTickets) {
                 throw new Exception("有人比你早進來呦!!無法執行");
             }
 
-            // ----------------------------------------
             // 更新動作明細
-            // ----------------------------------------
             date_default_timezone_set('Asia/Taipei');
             $time = date("Y-m-d H:i:s");
 
@@ -273,23 +249,17 @@ $basicMemberData = $memberData->takeMemberData();
 $basicMemberList = $memberData->takeMemberList();
 $basicTransactionDetails = $memberData->takeTransactionDetails();
 
-// ----------------------------------------
 // 新增會員按鈕
-// ----------------------------------------
 if (isset($_POST["btnAddMember"])) {
     $memberData->addNewMember($_POST["txtAddNewMember"]);
 }
 
-// ----------------------------------------
 // 選擇會員按鈕
-// ----------------------------------------
 if (isset($_POST["btnSelectMember"])) {
     $memberData->selectMember($_POST["select_one"]);
 }
 
-// ----------------------------------------
 // 出款按鈕
-// ----------------------------------------
 if (isset($_POST["btnDispensing"])) {
     if ($_POST["txtMoneyCount"] <= 0) {
         echo "<script language='JavaScript'>";
@@ -300,9 +270,7 @@ if (isset($_POST["btnDispensing"])) {
     }
 }
 
-// ----------------------------------------
 // 入款按鈕
-// ----------------------------------------
 if (isset($_POST["btnDeposit"])) {
     if ($_POST["txtMoneyCount"] <= 0) {
         echo "<script language='JavaScript'>";
