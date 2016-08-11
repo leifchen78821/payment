@@ -214,7 +214,7 @@ class Payment
             // 更新會員資料
             // ----------------------------------------
                 $sql = "UPDATE `MemberData` SET " .
-                    "`totalAssets` = `totalAssets` - :money, `numberTicket` = `numberTicket` + 1 " .
+                    "`totalAssets` = `totalAssets` + :money, `numberTicket` = `numberTicket` + 1 " .
                     "WHERE " .
                     "`memberName` = :id AND `numberTicket` = :numberTicket";
                 $prepare = $this->db->prepare($sql);
