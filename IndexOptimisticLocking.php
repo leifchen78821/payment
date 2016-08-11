@@ -124,17 +124,6 @@ class Payment
             $nowNumberTicket = $result["numberTicket"];
 
             if ($nowMoney >= $money) {
-                // 比較號碼牌，後來的人會出錯
-                $sql = "SELECT `numberTicket` FROM `MemberData` WHERE `memberName` = :id";
-                $prepare = $this->db->prepare($sql);
-                $prepare->bindParam(':id', $this->id);
-                $prepare->execute();
-                $result = $prepare->fetch(PDO::FETCH_ASSOC);
-                $sqlNumberTicket = $result["numberTicket"];
-                if($sqlNumberTicket != $nowNumberTicket) {
-                    throw new Exception("有人比你早進來呦!!無法執行");
-                }
-
                 // 更新會員資料
                 $sql = "UPDATE `MemberData` SET " .
                     "`totalAssets` = `totalAssets` - :money, `numberTicket` = `numberTicket` + 1 " .
@@ -145,6 +134,17 @@ class Payment
                 $prepare->bindParam(':id', $this->id);
                 $prepare->bindParam(':numberTicket', $nowNumberTicket);
                 $prepare->execute();
+
+                // 比較號碼牌，對沒排到的的人丟出錯誤訊息
+                $sql = "SELECT `numberTicket` FROM `MemberData` WHERE `memberName` = :id";
+                $prepare = $this->db->prepare($sql);
+                $prepare->bindParam(':id', $this->id);
+                $prepare->execute();
+                $result = $prepare->fetch(PDO::FETCH_ASSOC);
+                $sqlNumberTicket = $result["numberTicket"];
+                if($sqlNumberTicket != $nowNumberTicket + 1) {
+                    throw new Exception("有人比你早進來呦!!無法執行");
+                }
 
                 // 更新動作明細
                 $time = date("Y-m-d H:i:s");
@@ -192,27 +192,27 @@ class Payment
             $nowMoney = $result["totalAssets"];
             $nowNumberTicket = $result["numberTicket"];
 
-            // 比較號碼牌，後來的人會出錯
+            // 更新會員資料
+            $sql = "UPDATE `MemberData` SET " .
+                "`totalAssets` = `totalAssets` + :money, `numberTicket` = `numberTicket` + 1 " .
+                "WHERE " .
+                "`memberName` = :id AND `numberTicket` = :numberTicket";
+            $prepare = $this->db->prepare($sql);
+            $prepare->bindParam(':money', $money);
+            $prepare->bindParam(':id', $this->id);
+            $prepare->bindParam(':numberTicket', $nowNumberTicket);
+            $prepare->execute();
+
+            // 比較號碼牌，對沒排到的的人丟出錯誤訊息
             $sql = "SELECT `numberTicket` FROM `MemberData` WHERE `memberName` = :id";
             $prepare = $this->db->prepare($sql);
             $prepare->bindParam(':id', $this->id);
             $prepare->execute();
             $result = $prepare->fetch(PDO::FETCH_ASSOC);
             $sqlNumberTicket = $result["numberTicket"];
-            if($sqlNumberTicket != $nowNumberTickets) {
+            if($sqlNumberTicket != $nowNumberTickets + 1) {
                 throw new Exception("有人比你早進來呦!!無法執行");
             }
-
-            // 更新會員資料
-                $sql = "UPDATE `MemberData` SET " .
-                    "`totalAssets` = `totalAssets` + :money, `numberTicket` = `numberTicket` + 1 " .
-                    "WHERE " .
-                    "`memberName` = :id AND `numberTicket` = :numberTicket";
-                $prepare = $this->db->prepare($sql);
-                $prepare->bindParam(':money', $money);
-                $prepare->bindParam(':id', $this->id);
-                $prepare->bindParam(':numberTicket', $nowNumberTicket);
-                $prepare->execute();
 
             // 更新動作明細
             date_default_timezone_set('Asia/Taipei');
