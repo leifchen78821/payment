@@ -205,7 +205,6 @@ class Payment
             // ----------------------------------------
             date_default_timezone_set('Asia/Taipei');
             $time = date("Y-m-d H:i:s");
-            $action = 0;
 
             $sql = "INSERT INTO `TransactionDetails` " .
                 "(`memberName`, `dateTime`, `money`, `endActionTotalAssets`)" .
