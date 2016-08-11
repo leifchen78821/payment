@@ -58,9 +58,9 @@ class Payment
     function addNewMember($newMemberName)
     {
         $sql = "INSERT INTO `MemberData` " .
-            "(`memberName`, `totalAssets`)" .
+            "(`memberName`, `totalAssets`, `numberTicket`)" .
             "VALUES " .
-            "(:newMemberName, '0');";
+            "(:newMemberName, '0', '1');";
         $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':newMemberName', $newMemberName);
         $prepare->execute();
@@ -329,12 +329,12 @@ if (isset($_POST["btnDeposit"])) {
             <?php foreach($basicTransactionDetails as $list): ?>
             <tr>
             <td width = "35%"><?php echo $list["dateTime"]; ?></td>
-            <td width = "15%"><?php if($list["action"] == 0): ?>
+            <td width = "15%"><?php if($list["money"] > 0): ?>
                               存款
                               <?php else: ?>
                               提款
                               <?php endif ?></td>
-            <td width = "25%"><?php echo $list["money"]; ?></td>
+            <td width = "25%"><?php echo abs($list["money"]); ?></td>
             <td width = "25%"><?php echo $list["afterTotalAssets"]; ?></td>
             </tr>
             <?php endforeach ?>
