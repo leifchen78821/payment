@@ -17,14 +17,13 @@ class Payment
     // 新增使用者
     function addNewMember($newMemberName)
     {
-        $this->db->beginTransaction();
         $sql = "INSERT INTO `MemberData` " .
             "(`memberName`, `totalAssets`, `numberTicket`)" .
             "VALUES " .
             "(:newMemberName, '0', '1');";
         $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':newMemberName', $newMemberName);
-        $prepare->execute();
+        // $prepare->execute();
 
         // echo "<script language='JavaScript'>";
         // echo "alert('新增使用者 : " . $newMemberName . " 成功');location.href='/_payment/IndexPessimisticLocking.php';";
@@ -32,14 +31,27 @@ class Payment
 
         return "新增使用者 : " . $newMemberName . " 成功" ;
 
-        $this->db->rollback();
+    }
+
+    // 取得基本資料
+    function takeMemberData()
+    {
+        $sql = "SELECT * FROM `MemberData` WHERE `memberName` = :id";
+        $prepare = $this->db->prepare($sql);
+        $prepare->bindParam(':id', $this->id);
+        $prepare->execute();
+        $result = $prepare->fetch(PDO::FETCH_ASSOC);
+
+        $totalAssets = $result["totalAssets"];
+
+        return $totalAssets;
     }
 
     // 提(出)款
     function dispensingMoney($money)
     {
         $this->db->beginTransaction();
-        $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id LOCK IN SHARE MODE";
+        $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id FOR UPDATE";
         $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':id', $this->id);
         $prepare->execute();
@@ -88,7 +100,7 @@ class Payment
     function depositMoney($money)
     {
         $this->db->beginTransaction();
-        $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id LOCK IN SHARE MODE";
+        $sql = "SELECT `totalAssets` FROM `MemberData` WHERE `memberName` = :id FOR UPDATE";
         $prepare = $this->db->prepare($sql);
         $prepare->bindParam(':id', $this->id);
         $prepare->execute();

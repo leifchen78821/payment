@@ -5,11 +5,19 @@ require_once "myProject/IndexPessimisticLocking.php";
 class PessimisticLockingTest extends \PHPUnit_Framework_TestCase
 {
     // 測試新增會員
-    public function addNewMemberSuccess() {
+    public function testAddNewMemberSuccess() {
         $payment = new Payment();
-        $MemberName = 'Anny';
+        $newMemberName = 'Anny';
         $expectedResult = "新增使用者 : Anny 成功";
-        $result = $payment->addNewMember($money);
+        $result = $payment->addNewMember($newMemberName);
+        $this->assertEquals($expectedResult, $result);
+    }
+
+    // 測試取得會員資料
+    public function testTakeMemberDataSuccess() {
+        $payment = new Payment();
+        $expectedResult = 490000;
+        $result = $payment->takeMemberData();
         $this->assertEquals($expectedResult, $result);
     }
 
