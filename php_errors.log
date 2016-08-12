@@ -1,0 +1,154 @@
+[12-Aug-2016 04:18:55 UTC] PHP Warning:  require_once(..\_testPayment\myProject\IndexPessimisticLocking.php): failed to open stream: No such file or directory in /home/ubuntu/workspace/_payment/_testPayment/myProject/Test/PessimisticLockingTest.php on line 3
+[12-Aug-2016 04:18:55 UTC] PHP Stack trace:
+[12-Aug-2016 04:18:55 UTC] PHP   1. {main}() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:0
+[12-Aug-2016 04:18:55 UTC] PHP   2. PHPUnit_TextUI_Command::main() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:36
+[12-Aug-2016 04:18:55 UTC] PHP   3. PHPUnit_TextUI_Command->run() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:99
+[12-Aug-2016 04:18:55 UTC] PHP   4. PHPUnit_TextUI_Command->handleArguments() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:109
+[12-Aug-2016 04:18:55 UTC] PHP   5. PHPUnit_Util_Configuration->getTestSuiteConfiguration() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:622
+[12-Aug-2016 04:18:55 UTC] PHP   6. PHPUnit_Util_Configuration->getTestSuite() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:853
+[12-Aug-2016 04:18:55 UTC] PHP   7. PHPUnit_Framework_TestSuite->addTestFiles() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:940
+[12-Aug-2016 04:18:55 UTC] PHP   8. PHPUnit_Framework_TestSuite->addTestFile() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:406
+[12-Aug-2016 04:18:55 UTC] PHP   9. PHPUnit_Util_Fileloader::checkAndLoad() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:334
+[12-Aug-2016 04:18:55 UTC] PHP  10. PHPUnit_Util_Fileloader::load() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:36
+[12-Aug-2016 04:18:55 UTC] PHP  11. include_once() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:52
+[12-Aug-2016 04:18:55 UTC] PHP Fatal error:  require_once(): Failed opening required '..\_testPayment\myProject\IndexPessimisticLocking.php' (include_path='.:/usr/share/php:/usr/share/pear') in /home/ubuntu/workspace/_payment/_testPayment/myProject/Test/PessimisticLockingTest.php on line 3
+[12-Aug-2016 04:18:55 UTC] PHP Stack trace:
+[12-Aug-2016 04:18:55 UTC] PHP   1. {main}() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:0
+[12-Aug-2016 04:18:55 UTC] PHP   2. PHPUnit_TextUI_Command::main() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:36
+[12-Aug-2016 04:18:55 UTC] PHP   3. PHPUnit_TextUI_Command->run() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:99
+[12-Aug-2016 04:18:55 UTC] PHP   4. PHPUnit_TextUI_Command->handleArguments() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:109
+[12-Aug-2016 04:18:55 UTC] PHP   5. PHPUnit_Util_Configuration->getTestSuiteConfiguration() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:622
+[12-Aug-2016 04:18:55 UTC] PHP   6. PHPUnit_Util_Configuration->getTestSuite() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:853
+[12-Aug-2016 04:18:55 UTC] PHP   7. PHPUnit_Framework_TestSuite->addTestFiles() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:940
+[12-Aug-2016 04:18:55 UTC] PHP   8. PHPUnit_Framework_TestSuite->addTestFile() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:406
+[12-Aug-2016 04:18:55 UTC] PHP   9. PHPUnit_Util_Fileloader::checkAndLoad() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:334
+[12-Aug-2016 04:18:55 UTC] PHP  10. PHPUnit_Util_Fileloader::load() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:36
+[12-Aug-2016 04:18:55 UTC] PHP  11. include_once() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:52
+[12-Aug-2016 04:21:22 UTC] PHP Warning:  require_once(_payment\_testPayment\myProject\IndexPessimisticLocking.php): failed to open stream: No such file or directory in /home/ubuntu/workspace/_payment/_testPayment/myProject/Test/PessimisticLockingTest.php on line 3
+[12-Aug-2016 04:21:22 UTC] PHP Stack trace:
+[12-Aug-2016 04:21:22 UTC] PHP   1. {main}() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:0
+[12-Aug-2016 04:21:22 UTC] PHP   2. PHPUnit_TextUI_Command::main() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:36
+[12-Aug-2016 04:21:22 UTC] PHP   3. PHPUnit_TextUI_Command->run() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:99
+[12-Aug-2016 04:21:22 UTC] PHP   4. PHPUnit_TextUI_Command->handleArguments() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:109
+[12-Aug-2016 04:21:22 UTC] PHP   5. PHPUnit_Util_Configuration->getTestSuiteConfiguration() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:622
+[12-Aug-2016 04:21:22 UTC] PHP   6. PHPUnit_Util_Configuration->getTestSuite() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:853
+[12-Aug-2016 04:21:22 UTC] PHP   7. PHPUnit_Framework_TestSuite->addTestFiles() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:940
+[12-Aug-2016 04:21:22 UTC] PHP   8. PHPUnit_Framework_TestSuite->addTestFile() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:406
+[12-Aug-2016 04:21:22 UTC] PHP   9. PHPUnit_Util_Fileloader::checkAndLoad() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:334
+[12-Aug-2016 04:21:22 UTC] PHP  10. PHPUnit_Util_Fileloader::load() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:36
+[12-Aug-2016 04:21:22 UTC] PHP  11. include_once() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:52
+[12-Aug-2016 04:21:22 UTC] PHP Fatal error:  require_once(): Failed opening required '_payment\_testPayment\myProject\IndexPessimisticLocking.php' (include_path='.:/usr/share/php:/usr/share/pear') in /home/ubuntu/workspace/_payment/_testPayment/myProject/Test/PessimisticLockingTest.php on line 3
+[12-Aug-2016 04:21:22 UTC] PHP Stack trace:
+[12-Aug-2016 04:21:22 UTC] PHP   1. {main}() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:0
+[12-Aug-2016 04:21:22 UTC] PHP   2. PHPUnit_TextUI_Command::main() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:36
+[12-Aug-2016 04:21:22 UTC] PHP   3. PHPUnit_TextUI_Command->run() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:99
+[12-Aug-2016 04:21:22 UTC] PHP   4. PHPUnit_TextUI_Command->handleArguments() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:109
+[12-Aug-2016 04:21:22 UTC] PHP   5. PHPUnit_Util_Configuration->getTestSuiteConfiguration() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:622
+[12-Aug-2016 04:21:22 UTC] PHP   6. PHPUnit_Util_Configuration->getTestSuite() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:853
+[12-Aug-2016 04:21:22 UTC] PHP   7. PHPUnit_Framework_TestSuite->addTestFiles() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:940
+[12-Aug-2016 04:21:22 UTC] PHP   8. PHPUnit_Framework_TestSuite->addTestFile() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:406
+[12-Aug-2016 04:21:22 UTC] PHP   9. PHPUnit_Util_Fileloader::checkAndLoad() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:334
+[12-Aug-2016 04:21:22 UTC] PHP  10. PHPUnit_Util_Fileloader::load() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:36
+[12-Aug-2016 04:21:22 UTC] PHP  11. include_once() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:52
+[12-Aug-2016 04:21:24 UTC] PHP Warning:  require_once(_payment\_testPayment\myProject\IndexPessimisticLocking.php): failed to open stream: No such file or directory in /home/ubuntu/workspace/_payment/_testPayment/myProject/Test/PessimisticLockingTest.php on line 3
+[12-Aug-2016 04:21:24 UTC] PHP Stack trace:
+[12-Aug-2016 04:21:24 UTC] PHP   1. {main}() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:0
+[12-Aug-2016 04:21:24 UTC] PHP   2. PHPUnit_TextUI_Command::main() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:36
+[12-Aug-2016 04:21:24 UTC] PHP   3. PHPUnit_TextUI_Command->run() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:99
+[12-Aug-2016 04:21:24 UTC] PHP   4. PHPUnit_TextUI_Command->handleArguments() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:109
+[12-Aug-2016 04:21:24 UTC] PHP   5. PHPUnit_Util_Configuration->getTestSuiteConfiguration() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:622
+[12-Aug-2016 04:21:24 UTC] PHP   6. PHPUnit_Util_Configuration->getTestSuite() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:853
+[12-Aug-2016 04:21:24 UTC] PHP   7. PHPUnit_Framework_TestSuite->addTestFiles() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:940
+[12-Aug-2016 04:21:24 UTC] PHP   8. PHPUnit_Framework_TestSuite->addTestFile() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:406
+[12-Aug-2016 04:21:24 UTC] PHP   9. PHPUnit_Util_Fileloader::checkAndLoad() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:334
+[12-Aug-2016 04:21:24 UTC] PHP  10. PHPUnit_Util_Fileloader::load() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:36
+[12-Aug-2016 04:21:24 UTC] PHP  11. include_once() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:52
+[12-Aug-2016 04:21:24 UTC] PHP Fatal error:  require_once(): Failed opening required '_payment\_testPayment\myProject\IndexPessimisticLocking.php' (include_path='.:/usr/share/php:/usr/share/pear') in /home/ubuntu/workspace/_payment/_testPayment/myProject/Test/PessimisticLockingTest.php on line 3
+[12-Aug-2016 04:21:24 UTC] PHP Stack trace:
+[12-Aug-2016 04:21:24 UTC] PHP   1. {main}() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:0
+[12-Aug-2016 04:21:24 UTC] PHP   2. PHPUnit_TextUI_Command::main() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:36
+[12-Aug-2016 04:21:24 UTC] PHP   3. PHPUnit_TextUI_Command->run() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:99
+[12-Aug-2016 04:21:24 UTC] PHP   4. PHPUnit_TextUI_Command->handleArguments() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:109
+[12-Aug-2016 04:21:24 UTC] PHP   5. PHPUnit_Util_Configuration->getTestSuiteConfiguration() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:622
+[12-Aug-2016 04:21:24 UTC] PHP   6. PHPUnit_Util_Configuration->getTestSuite() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:853
+[12-Aug-2016 04:21:24 UTC] PHP   7. PHPUnit_Framework_TestSuite->addTestFiles() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:940
+[12-Aug-2016 04:21:24 UTC] PHP   8. PHPUnit_Framework_TestSuite->addTestFile() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:406
+[12-Aug-2016 04:21:24 UTC] PHP   9. PHPUnit_Util_Fileloader::checkAndLoad() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:334
+[12-Aug-2016 04:21:24 UTC] PHP  10. PHPUnit_Util_Fileloader::load() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:36
+[12-Aug-2016 04:21:24 UTC] PHP  11. include_once() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:52
+[12-Aug-2016 04:21:44 UTC] PHP Warning:  require_once(_testPayment\myProject\IndexPessimisticLocking.php): failed to open stream: No such file or directory in /home/ubuntu/workspace/_payment/_testPayment/myProject/Test/PessimisticLockingTest.php on line 3
+[12-Aug-2016 04:21:44 UTC] PHP Stack trace:
+[12-Aug-2016 04:21:44 UTC] PHP   1. {main}() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:0
+[12-Aug-2016 04:21:44 UTC] PHP   2. PHPUnit_TextUI_Command::main() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:36
+[12-Aug-2016 04:21:44 UTC] PHP   3. PHPUnit_TextUI_Command->run() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:99
+[12-Aug-2016 04:21:44 UTC] PHP   4. PHPUnit_TextUI_Command->handleArguments() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:109
+[12-Aug-2016 04:21:44 UTC] PHP   5. PHPUnit_Util_Configuration->getTestSuiteConfiguration() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:622
+[12-Aug-2016 04:21:44 UTC] PHP   6. PHPUnit_Util_Configuration->getTestSuite() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:853
+[12-Aug-2016 04:21:44 UTC] PHP   7. PHPUnit_Framework_TestSuite->addTestFiles() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:940
+[12-Aug-2016 04:21:44 UTC] PHP   8. PHPUnit_Framework_TestSuite->addTestFile() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:406
+[12-Aug-2016 04:21:44 UTC] PHP   9. PHPUnit_Util_Fileloader::checkAndLoad() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:334
+[12-Aug-2016 04:21:44 UTC] PHP  10. PHPUnit_Util_Fileloader::load() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:36
+[12-Aug-2016 04:21:44 UTC] PHP  11. include_once() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:52
+[12-Aug-2016 04:21:44 UTC] PHP Fatal error:  require_once(): Failed opening required '_testPayment\myProject\IndexPessimisticLocking.php' (include_path='.:/usr/share/php:/usr/share/pear') in /home/ubuntu/workspace/_payment/_testPayment/myProject/Test/PessimisticLockingTest.php on line 3
+[12-Aug-2016 04:21:44 UTC] PHP Stack trace:
+[12-Aug-2016 04:21:44 UTC] PHP   1. {main}() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:0
+[12-Aug-2016 04:21:44 UTC] PHP   2. PHPUnit_TextUI_Command::main() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:36
+[12-Aug-2016 04:21:44 UTC] PHP   3. PHPUnit_TextUI_Command->run() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:99
+[12-Aug-2016 04:21:44 UTC] PHP   4. PHPUnit_TextUI_Command->handleArguments() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:109
+[12-Aug-2016 04:21:44 UTC] PHP   5. PHPUnit_Util_Configuration->getTestSuiteConfiguration() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:622
+[12-Aug-2016 04:21:44 UTC] PHP   6. PHPUnit_Util_Configuration->getTestSuite() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:853
+[12-Aug-2016 04:21:44 UTC] PHP   7. PHPUnit_Framework_TestSuite->addTestFiles() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:940
+[12-Aug-2016 04:21:44 UTC] PHP   8. PHPUnit_Framework_TestSuite->addTestFile() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:406
+[12-Aug-2016 04:21:44 UTC] PHP   9. PHPUnit_Util_Fileloader::checkAndLoad() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:334
+[12-Aug-2016 04:21:44 UTC] PHP  10. PHPUnit_Util_Fileloader::load() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:36
+[12-Aug-2016 04:21:44 UTC] PHP  11. include_once() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:52
+[12-Aug-2016 04:22:12 UTC] PHP Warning:  require_once(myProject\IndexPessimisticLocking.php): failed to open stream: No such file or directory in /home/ubuntu/workspace/_payment/_testPayment/myProject/Test/PessimisticLockingTest.php on line 3
+[12-Aug-2016 04:22:12 UTC] PHP Stack trace:
+[12-Aug-2016 04:22:12 UTC] PHP   1. {main}() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:0
+[12-Aug-2016 04:22:12 UTC] PHP   2. PHPUnit_TextUI_Command::main() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:36
+[12-Aug-2016 04:22:12 UTC] PHP   3. PHPUnit_TextUI_Command->run() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:99
+[12-Aug-2016 04:22:12 UTC] PHP   4. PHPUnit_TextUI_Command->handleArguments() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:109
+[12-Aug-2016 04:22:12 UTC] PHP   5. PHPUnit_Util_Configuration->getTestSuiteConfiguration() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:622
+[12-Aug-2016 04:22:12 UTC] PHP   6. PHPUnit_Util_Configuration->getTestSuite() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:853
+[12-Aug-2016 04:22:12 UTC] PHP   7. PHPUnit_Framework_TestSuite->addTestFiles() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:940
+[12-Aug-2016 04:22:12 UTC] PHP   8. PHPUnit_Framework_TestSuite->addTestFile() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:406
+[12-Aug-2016 04:22:12 UTC] PHP   9. PHPUnit_Util_Fileloader::checkAndLoad() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:334
+[12-Aug-2016 04:22:12 UTC] PHP  10. PHPUnit_Util_Fileloader::load() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:36
+[12-Aug-2016 04:22:12 UTC] PHP  11. include_once() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:52
+[12-Aug-2016 04:22:12 UTC] PHP Fatal error:  require_once(): Failed opening required 'myProject\IndexPessimisticLocking.php' (include_path='.:/usr/share/php:/usr/share/pear') in /home/ubuntu/workspace/_payment/_testPayment/myProject/Test/PessimisticLockingTest.php on line 3
+[12-Aug-2016 04:22:12 UTC] PHP Stack trace:
+[12-Aug-2016 04:22:12 UTC] PHP   1. {main}() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:0
+[12-Aug-2016 04:22:12 UTC] PHP   2. PHPUnit_TextUI_Command::main() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:36
+[12-Aug-2016 04:22:12 UTC] PHP   3. PHPUnit_TextUI_Command->run() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:99
+[12-Aug-2016 04:22:12 UTC] PHP   4. PHPUnit_TextUI_Command->handleArguments() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:109
+[12-Aug-2016 04:22:12 UTC] PHP   5. PHPUnit_Util_Configuration->getTestSuiteConfiguration() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:622
+[12-Aug-2016 04:22:12 UTC] PHP   6. PHPUnit_Util_Configuration->getTestSuite() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:853
+[12-Aug-2016 04:22:12 UTC] PHP   7. PHPUnit_Framework_TestSuite->addTestFiles() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:940
+[12-Aug-2016 04:22:12 UTC] PHP   8. PHPUnit_Framework_TestSuite->addTestFile() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:406
+[12-Aug-2016 04:22:12 UTC] PHP   9. PHPUnit_Util_Fileloader::checkAndLoad() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:334
+[12-Aug-2016 04:22:12 UTC] PHP  10. PHPUnit_Util_Fileloader::load() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:36
+[12-Aug-2016 04:22:12 UTC] PHP  11. include_once() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:52
+[12-Aug-2016 05:57:33 UTC] PHP Parse error:  syntax error, unexpected 'ㄋ' (T_STRING) in /home/ubuntu/workspace/_payment/_testPayment/myProject/Test/PessimisticLockingTest.php on line 27
+[12-Aug-2016 05:57:33 UTC] PHP Stack trace:
+[12-Aug-2016 05:57:33 UTC] PHP   1. {main}() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:0
+[12-Aug-2016 05:57:33 UTC] PHP   2. PHPUnit_TextUI_Command::main() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:36
+[12-Aug-2016 05:57:33 UTC] PHP   3. PHPUnit_TextUI_Command->run() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:99
+[12-Aug-2016 05:57:33 UTC] PHP   4. PHPUnit_TextUI_Command->handleArguments() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:109
+[12-Aug-2016 05:57:33 UTC] PHP   5. PHPUnit_Util_Configuration->getTestSuiteConfiguration() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:622
+[12-Aug-2016 05:57:33 UTC] PHP   6. PHPUnit_Util_Configuration->getTestSuite() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:853
+[12-Aug-2016 05:57:33 UTC] PHP   7. PHPUnit_Framework_TestSuite->addTestFiles() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:940
+[12-Aug-2016 05:57:33 UTC] PHP   8. PHPUnit_Framework_TestSuite->addTestFile() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:406
+[12-Aug-2016 05:57:33 UTC] PHP   9. PHPUnit_Util_Fileloader::checkAndLoad() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:334
+[12-Aug-2016 05:57:33 UTC] PHP  10. PHPUnit_Util_Fileloader::load() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:36
+[12-Aug-2016 06:18:58 UTC] PHP Fatal error:  Cannot redeclare PessimisticLockingTest::testDispensingMoneySuccess() in /home/ubuntu/workspace/_payment/_testPayment/myProject/Test/PessimisticLockingTest.php on line 17
+[12-Aug-2016 06:18:58 UTC] PHP Stack trace:
+[12-Aug-2016 06:18:58 UTC] PHP   1. {main}() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:0
+[12-Aug-2016 06:18:58 UTC] PHP   2. PHPUnit_TextUI_Command::main() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/phpunit:36
+[12-Aug-2016 06:18:58 UTC] PHP   3. PHPUnit_TextUI_Command->run() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:99
+[12-Aug-2016 06:18:58 UTC] PHP   4. PHPUnit_TextUI_Command->handleArguments() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:109
+[12-Aug-2016 06:18:58 UTC] PHP   5. PHPUnit_Util_Configuration->getTestSuiteConfiguration() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/TextUI/Command.php:622
+[12-Aug-2016 06:18:58 UTC] PHP   6. PHPUnit_Util_Configuration->getTestSuite() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:853
+[12-Aug-2016 06:18:58 UTC] PHP   7. PHPUnit_Framework_TestSuite->addTestFiles() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Configuration.php:940
+[12-Aug-2016 06:18:58 UTC] PHP   8. PHPUnit_Framework_TestSuite->addTestFile() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:406
+[12-Aug-2016 06:18:58 UTC] PHP   9. PHPUnit_Util_Fileloader::checkAndLoad() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Framework/TestSuite.php:334
+[12-Aug-2016 06:18:58 UTC] PHP  10. PHPUnit_Util_Fileloader::load() /home/ubuntu/workspace/_payment/_testPayment/vendor/phpunit/phpunit/src/Util/Fileloader.php:36
